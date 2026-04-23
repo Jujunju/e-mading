@@ -1,0 +1,85 @@
+/* Card Container */
+.mading-card-premium {
+  border-radius: 20px !important;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Transisi halus */
+  cursor: pointer;
+}
+
+/* EFECK HOVER: Mengangkat card sedikit ke atas (bukan zoom) */
+.mading-card-premium:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Image Wrapper */
+.img-container {
+  height: 220px;
+  border-radius: 20px 20px 0 0;
+}
+
+.mading-img {
+  transition: opacity 0.3s ease;
+}
+
+/* Badge Statis */
+.mading-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(0, 109, 50, 0.9);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+/* Judul Card */
+.mading-card-title {
+  font-weight: 700;
+  color: #1e293b;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.mading-card-premium:hover .mading-card-title {
+  color: #006d32; /* Judul berubah warna saat card di-hover */
+}
+
+/* Excerpt / Ringkasan Isi */
+.mading-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Tombol Link & Animasi Panah */
+.btn-mading-link {
+  color: #006d32;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.mading-card-premium:hover .arrow-icon {
+  transform: translateX(5px); /* Panah bergeser sedikit saat card di-hover */
+}
+
+.mading-card-premium:hover .btn-mading-link {
+  color: #004d23;
+}

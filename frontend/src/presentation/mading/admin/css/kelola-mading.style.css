@@ -1,0 +1,123 @@
+.extra-small {
+  font-size: 11px;
+}
+.img-thumb {
+  width: 80px;
+  height: 55px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.btn-white {
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  transition: 0.3s;
+}
+.btn-white:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.btn-action.edit {
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fef3c7;
+}
+.btn-action.delete {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fee2e2;
+}
+.btn-action:hover {
+  transform: translateY(-2px);
+}
+.btn-action span {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .d-xl-table-header-group {
+    display: none !important;
+  }
+  .responsive-tbody {
+    display: block;
+    width: 100%;
+  }
+  .responsive-row {
+    display: block;
+    background: white;
+    padding: 1.25rem;
+    position: relative;
+  }
+  .responsive-row td {
+    display: flex;
+    align-items: center;
+    padding: 8px 0 !important;
+    border: 0 !important;
+    width: 100%;
+  }
+  .mobile-label {
+    width: 110px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .td-content {
+    border-bottom: 1px dashed #e2e8f0 !important;
+    margin-bottom: 10px;
+    padding-bottom: 15px !important;
+  }
+  .img-thumb {
+    width: 65px;
+    height: 65px;
+    border-radius: 12px;
+  }
+
+  .action-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .btn-action {
+    width: 100%;
+    padding: 12px;
+  }
+  .btn-action span {
+    display: inline;
+  }
+}
+
+@media (min-width: 992px) {
+  .action-wrapper {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .responsive-row:hover {
+    background-color: #f8fafc;
+  }
+}
+.page-link {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

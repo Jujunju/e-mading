@@ -1,0 +1,23 @@
+.stat-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.stat-card:hover {
+  transform: translateY(-8px);
+  background-color: white !important;
+  border-color: #006d32 !important;
+  box-shadow: 0 15px 30px rgba(0, 109, 50, 0.1) !important;
+}
+.hover-up:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1) !important;
+}
+.transition-all {
+  transition: all 0.3s ease;
+}
+.icon-box {
+  transition: all 0.3s ease;
+}
+.stat-card:hover .icon-box {
+  transform: scale(1.1) rotate(5deg);
+}

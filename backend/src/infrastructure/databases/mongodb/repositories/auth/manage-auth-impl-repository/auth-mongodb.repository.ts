@@ -1,0 +1,22 @@
+import { AuthRepository } from "../../../../../../domain/repositories/auth/auth-repository-contracts/auth.repository";
+import { UserEntity } from "../../../../../../domain/entities/user.entity";
+import { UserModel } from "../../../models/user-mongodb.model";
+import { RegisterDTO } from "../../../../../../interface-adapters/dtos/auth/auth.dtos";
+
+export class AuthMongodbRepository implements AuthRepository {
+  private toEntity(r: any): UserEntity {
+    return new UserEntity(r._id.toString(), r.fullName, r.username, r.password, r.role, r.kelas, r.jurusan, r.createdAt.toString(), r.updatedAt.toString());
+  }
+
+  async create(user: RegisterDTO): Promise<UserEntity | null> {
+    const result = new UserModel(user);
+    await result.save();
+
+    return result ? this.toEntity(result) : null;
+  }
+  async findByUsername(username: string): Promise<UserEntity | null> {
+    const result = await UserModel.findOne({ username }).lean();
+
+    return result ? this.toEntity(result) : null;
+  }
+}

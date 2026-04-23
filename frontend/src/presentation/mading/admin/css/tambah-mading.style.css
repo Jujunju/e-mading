@@ -1,0 +1,59 @@
+.py-2-5 {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+.custom-input-group {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.custom-input-group:focus-within {
+  ring: 2px solid #006d32;
+  box-shadow: 0 0 15px rgba(0, 109, 50, 0.1);
+}
+
+.upload-zone {
+  border: 2px dashed #e2e8f0;
+  transition: 0.3s;
+}
+.upload-zone:hover {
+  border-color: #006d32;
+  background: #f0fff4;
+}
+
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.overlay-change {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: 0.3s;
+}
+.preview-container:hover .overlay-change {
+  opacity: 1;
+}
+
+.hover-scale {
+  transition: 0.3s;
+}
+.hover-scale:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #cbd5e1 !important;
+  font-weight: 400;
+}
+.form-select {
+  cursor: pointer;
+}
