@@ -1,19 +1,28 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { sendResponse } from "../../../../../interface-adapters/utils/status-response.util";
-import { UserMadingController } from "../../../../../interface-adapters/controllers/mading/client/user-mading-controller/mading.controller";
+import { sendResponse } from '../../../../utils/status-response.util';
+import { UserMadingController } from '../../../../../interface-adapters/controllers/mading/client/user-mading-controller/mading.controller';
 
-export const getMadingBySlug = (userMadingController: UserMadingController): Router => {
-  const madingRoute = Router();
+export class MadingClientRoute {
+  private readonly router = Router();
 
-  madingRoute.get('/mading/slug/:slug', async (req: Request, res: Response, next: NextFunction) => {
-    const httpRequestParam = { param: req.params.slug };
+  constructor(private controller: UserMadingController) {
+    this.getMadingBySlug();
+  }
 
-    const response = await userMadingController.handleGetMadingBySlug(httpRequestParam.param);
-    if (!response) {
-      return null;
-    }
-    sendResponse(res, response);
-  });
+  private getMadingBySlug(): void {
+    this.router.get('/mading/slug/:slug', async (req: Request, res: Response, next: NextFunction) => {
+      const httpRequestParam = { param: req.params.slug };
 
-  return madingRoute;
-};
+      const response = await this.controller.handleGetMadingBySlug(httpRequestParam.param);
+      if (!response) {
+        return null;
+      }
+      sendResponse(res, response);
+    });
+  }
+  public getRoutes = (): Router => {
+    return this.router;
+  };
+}
+
+

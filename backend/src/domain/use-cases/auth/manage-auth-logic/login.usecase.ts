@@ -1,17 +1,18 @@
 import { ITokenJwt } from '../../../../infrastructure/security/jwt.security';
 import { UseCaseBase } from '../../../base/use-case.base';
 import { AppError } from '../../../errors/app.error';
-import { LoginDTO, LoginResponseDTO } from '../../../../interface-adapters/dtos/auth/auth.dtos';
+import { LoginDTO } from '../../../dtos/auth/auth.dtos';
 import { AuthRepository } from '../../../repositories/auth/auth-repository-contracts/auth.repository';
 import { AuthService } from '../../../services/auth.service';
+import { LoginResponse } from '../../../entities/user.entity';
 
-export class LoginUseCase implements UseCaseBase<LoginDTO, LoginResponseDTO> {
+export class LoginUseCase implements UseCaseBase<LoginDTO, LoginResponse> {
   constructor(
     private authRepository: AuthRepository,
     private authService: AuthService,
     private iTokenJwt: ITokenJwt,
   ) {}
-  async execute(input: LoginDTO): Promise<LoginResponseDTO> {
+  async execute(input: LoginDTO): Promise<LoginResponse> {
     const response = await this.authRepository.findByUsername(input.username);
 
     if (!response || !response.password) {
@@ -26,6 +27,6 @@ export class LoginUseCase implements UseCaseBase<LoginDTO, LoginResponseDTO> {
 
     const token = this.iTokenJwt.generateToken({ id: response.id.toString(), fullName: response.fullName, username: response.username, role: response.role });
 
-    return new LoginResponseDTO({ id: response.id.toString(), fullName: response.fullName, username: response.username, role: response.role, kelas: response.kelas, jurusan: response.jurusan }, token);
+    return new LoginResponse({ id: response.id.toString(), fullName: response.fullName, username: response.username, role: response.role, kelas: response.kelas, jurusan: response.jurusan }, token);
   }
 }

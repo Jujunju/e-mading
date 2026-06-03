@@ -5,4 +5,5 @@ export interface ClientCommentRepository {
   create(data: FrontCommentDTO): Promise<void>;
   editComment(id: string, data: FrontCommentDTO): Promise<void>;
   getComment(): Promise<FrontCommentEntity[]>;
+  deleteCommentById(id: string): Promise<void>;
 }

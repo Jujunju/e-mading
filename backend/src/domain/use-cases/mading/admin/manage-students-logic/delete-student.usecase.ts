@@ -3,6 +3,8 @@ import { UserResponse } from '../../../../entities/user.entity';
 import { AppError } from '../../../../errors/app.error';
 import { StudentRepository } from '../../../../repositories/mading/admins/manage-student-contracts/student.repository';
 
+const isDate = new Date().toISOString();
+
 export class DeleteStudentUseCase implements UseCaseBase<string, UserResponse> {
   constructor(private studentRepository: StudentRepository) {}
   async execute(input: string): Promise<UserResponse> {
@@ -13,7 +15,7 @@ export class DeleteStudentUseCase implements UseCaseBase<string, UserResponse> {
         throw new AppError('Gagal menghapus data', 404);
       }
 
-      return new UserResponse(response.id, response.fullName, response.username, response.role, response.jurusan, response.createdAt, response.updatedAt);
+      return new UserResponse(response.id, response.fullName, response.username, response.role ?? 'siswa', response.kelas ?? '', response.jurusan ?? '', response.createdAt ?? isDate, response.updatedAt ?? isDate);
     } catch (error) {
       if (error instanceof AppError) throw error;
 

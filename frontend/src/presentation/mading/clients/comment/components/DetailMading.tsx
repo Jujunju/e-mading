@@ -2,75 +2,42 @@ import React, { useEffect, useState } from 'react';
 import { Navbar } from '../../landing/components/Navbar';
 import { Pencil, Send, Trash2, Calendar, Tag, MessageCircle, Heart, Share2, ChevronLeft, MoreHorizontal, X } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
-// import { FrontMadingImplRepository } from '../../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-// import { FrontGetMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/front-mading.usecase';
-// import { useGetMading } from '../../../admin/hooks/use-manage-mading-hook/use-mading.hooks';
 import { useEditComment, useGetComment, useSaveComment } from '../hooks/use-user-comment/use-comment.hooks';
-import { ClientFrontCommentImplRepository } from '../../../../../data/repositories/mading/client/user-comment/front-comment-impl.repository';
-import { FrontCommentUseCase } from '../../../../../core/usecases/mading/client/user-comment/front-comment.usecase';
-import { FrontGetCommentUseCase } from '../../../../../core/usecases/mading/client/user-comment/front-get-comment.usecase';
-import { jwtDecode } from 'jwt-decode';
-import type { FrontMadingEntity } from '../../../../../core/entities/front-mading.entity';
 import '../css/detail-mading.style.css';
-import { FrontEditCommentUseCase } from '../../../../../core/usecases/mading/client/user-comment/front-edit-comment.usecase';
-import { FrontDeleteCommentByIdUseCase } from '../../../../../core/usecases/mading/client/user-comment/front-delete-comment-by-id.usecase';
-import { AdminFrontCommentImplRepository } from '../../../../../data/repositories/mading/admin/front-manage-comment-impl-repository/front-comment-impl.repository';
 import { useDeleteComment } from '../../../admin/hooks/use-manage-comment-hook/use-comment.hooks';
 import Swal from 'sweetalert2';
-import { FrontGetMadingBySlugUseCase } from '../../../../../core/usecases/mading/client/user-mading/front-get-mading-by-slug.usecase';
+import { getMadingBySlug } from '../../../../../di/manage-mading/client/client-mading-container';
+import { createCommentUC, deleteCommentByIdUC, editCommentByIdUC, getCommentsUC } from '../../../../../di/manage-comment/client/comment-client-container';
 import { useGetMadingBySlug } from '../hooks/use-user-comment/use-user-mading.hooks';
-import { ClientFrontUserMadingImplRepository } from '../../../../../data/repositories/mading/client/user-mading/front-user-mading-impl.repository';
-
-// const repoMading = new FrontMadingImplRepository();
-const repoClientMading = new ClientFrontUserMadingImplRepository();
-// const useCaseMading = new FrontGetMadingUseCase(repoMading);
-const useCaseMading = new FrontGetMadingBySlugUseCase(repoClientMading);
-
-const repoComment = new ClientFrontCommentImplRepository();
-const useCaseSaveComment = new FrontCommentUseCase(repoComment);
-const useCaseGetComment = new FrontGetCommentUseCase(repoComment);
-const useCaseEditComment = new FrontEditCommentUseCase(repoComment);
-
-const repoKomentar = new AdminFrontCommentImplRepository();
-const useCaseDeleteComment = new FrontDeleteCommentByIdUseCase(repoKomentar);
+import { useAuth } from '../../../../auth/hooks/use-auth.hook';
 
 export const DetailMading: React.FC = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  // Hooks
-  // const { executeGetMadingHook, data: dataMading } = useGetMading(useCaseMading);
-  const { executeGetMadingBySlugHook, data: dataMading } = useGetMadingBySlug(useCaseMading);
-  const { executeGetCommentHook, data: dataComment } = useGetComment(useCaseGetComment);
-  const { executeCommentHook } = useSaveComment(useCaseSaveComment);
-  const { executeEditCommentHook } = useEditComment(useCaseEditComment);
-  const { executeDeleteCommentHook } = useDeleteComment(useCaseDeleteComment);
+  const { executeGetMadingBySlugHook, data: dataMading } = useGetMadingBySlug(getMadingBySlug);
+  const { executeGetCommentHook, data: dataComment } = useGetComment(getCommentsUC);
+  const { executeCommentHook } = useSaveComment(createCommentUC);
+  const { executeEditCommentHook } = useEditComment(editCommentByIdUC);
+  const { executeDeleteCommentHook } = useDeleteComment(deleteCommentByIdUC);
+  const {isAuthenticated, user} = useAuth()
 
-  // Local State
-  const [dataObj, setDataObj] = useState<FrontMadingEntity | null>(null);
   const [comment, setComment] = useState<string>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLiked, setIsLiked] = useState(false);
 
-  // Auth Context
-  const token = localStorage.getItem('token');
-  const decode = token ? jwtDecode<{ id: string }>(token) : null;
+  const found = dataMading?.find((item) => item.slug === slug);
 
   useEffect(() => {
-    executeGetMadingBySlugHook(slug!);
+    if(slug) {
+      executeGetMadingBySlugHook(slug);
+    }
     executeGetCommentHook();
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (dataMading && slug) {
-      const found = dataMading.find((item) => item.slug === slug);
-      setDataObj(found!);
-    }
-  }, [dataMading, slug]);
+  }, [slug]);
 
   const handleCommentSubmit = async () => {
-    if (!token) {
+    if (!isAuthenticated) {
       await Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -81,7 +48,7 @@ export const DetailMading: React.FC = () => {
 
     if (!comment.trim()) return;
 
-    const getId = dataMading?.find((e) => e.slug === slug)
+    const getId = dataMading?.find((e) => e.slug === slug);
 
     try {
       if (editingId) {
@@ -104,9 +71,7 @@ export const DetailMading: React.FC = () => {
     }
   };
 
-  // Handler: Hapus Komentar
   const handleDeleteComment = async (commentId: string) => {
-    // 1. Tampilkan konfirmasi
     const result = await Swal.fire({
       title: 'Hapus Komentar?',
       text: 'Komentar yang dihapus tidak bisa dikembalikan loh!',
@@ -119,12 +84,10 @@ export const DetailMading: React.FC = () => {
       draggable: true,
     });
 
-    // 2. Jika user klik "Ya, Hapus!"
     if (result.isConfirmed) {
       try {
         await executeDeleteCommentHook(commentId);
 
-        // 3. Tampilkan pesan berhasil
         await Swal.fire({
           title: 'Terhapus!',
           text: 'Komentar kamu sudah hilang.',
@@ -132,9 +95,8 @@ export const DetailMading: React.FC = () => {
           showConfirmButton: false,
         });
 
-        executeGetCommentHook(); // Refresh list data
+        executeGetCommentHook(); 
       } catch (error) {
-        // 4. Tampilkan pesan jika gagal
         Swal.fire({
           title: 'Gagal!',
           text: 'Ada masalah saat menghapus komentar.',
@@ -154,7 +116,6 @@ export const DetailMading: React.FC = () => {
     <div className="min-vh-100" style={{ backgroundColor: '#ffffff' }}>
       <Navbar />
 
-      {/* HEADER ACTIONS */}
       <div className="container pt-5 mt-5">
         <div className="row justify-content-center">
           <div className="col-lg-9 d-flex justify-content-between align-items-center mb-4">
@@ -176,28 +137,27 @@ export const DetailMading: React.FC = () => {
       <div className="container pb-5">
         <div className="row justify-content-center">
           <div className="col-lg-9 col-xl-8">
-            {/* MAIN MADING CONTENT */}
             <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-5">
               <div className="position-relative">
-                <img src={`http://localhost:8080/uploads/${dataObj?.gambar}`} className="w-100" alt="cover" style={{ height: '500px', objectFit: 'cover' }} />
+                <img src={`http://localhost:8080/uploads/${found?.gambar}`} className="w-100" alt="cover" style={{ height: '500px', objectFit: 'cover' }} />
                 <div className="image-overlay-soft" />
               </div>
               <div className="card-body p-4 p-md-5 mt-n5 position-relative bg-white mx-3 rounded-4 shadow-sm" style={{ marginTop: '-40px' }}>
                 <div className="mb-4">
                   <span className="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-bold">
-                    <Tag size={14} className="me-1" /> {dataObj?.kategori}
+                    <Tag size={14} className="me-1" /> {found?.kategori}
                   </span>
                 </div>
-                <h1 className="display-6 fw-bold text-dark mb-3">{dataObj?.judul}</h1>
+                <h1 className="display-6 fw-bold text-dark mb-3">{found?.judul}</h1>
                 <div className="d-flex align-items-center gap-3 mb-5 py-3 border-bottom border-top">
                   <Calendar size={18} className="text-success" />
                   <div>
                     <small className="text-muted d-block">Diterbitkan pada</small>
-                    <span className="fw-semibold text-dark">{dataObj && new Date(dataObj.createdAt).toLocaleDateString('id-ID', { dateStyle: 'full' })}</span>
+                    <span className="fw-semibold text-dark">{found && new Date(found.createdAt).toLocaleDateString('id-ID', { dateStyle: 'full' })}</span>
                   </div>
                 </div>
                 <div className="mading-body-text fs-5 text-secondary">
-                  {dataObj?.isi.split('\n').map((para, i) => (
+                  {found?.isi.split('\n').map((para, i) => (
                     <p key={i} className="mb-4">
                       {para}
                     </p>
@@ -212,7 +172,6 @@ export const DetailMading: React.FC = () => {
               </div>
             </div>
 
-            {/* DISCUSSION SECTION */}
             <div className="discussion-container mb-5 pb-5">
               <div className="d-flex align-items-center gap-2 mb-4">
                 <MessageCircle className="text-success" />
@@ -237,7 +196,7 @@ export const DetailMading: React.FC = () => {
                           </div>
                           <p className="text-secondary mt-3 mb-0">{e.isiKomentar}</p>
 
-                          {token && decode?.id === e.userId && (
+                          {isAuthenticated && user?.user?.id === e.userId && (
                             <div className="mt-3 pt-3 border-top d-flex gap-3">
                               <button
                                 onClick={() => {
@@ -266,7 +225,6 @@ export const DetailMading: React.FC = () => {
               </div>
             </div>
 
-            {/* FLOATING INPUT FIELD */}
             <div className="fixed-bottom py-4 bg-white bg-opacity-75 backdrop-blur shadow-lg border-top">
               <div className="container">
                 <div className="row justify-content-center">

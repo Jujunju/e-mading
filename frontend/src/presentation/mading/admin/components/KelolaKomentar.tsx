@@ -1,21 +1,13 @@
 import { Calendar, FileText, Trash2, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { ClientFrontCommentImplRepository } from '../../../../data/repositories/mading/client/user-comment/front-comment-impl.repository';
 import { useDeleteComment, useGetComment } from '../hooks/use-manage-comment-hook/use-comment.hooks';
-import { FrontGetCommentUseCase } from '../../../../core/usecases/mading/client/user-comment/front-get-comment.usecase';
-import { FrontDeleteCommentByIdUseCase} from '../../../../core/usecases/mading/client/user-comment/front-delete-comment-by-id.usecase';
 import Swal from 'sweetalert2';
 import '../css/kelola-komentar.style.css';
-import { AdminFrontCommentImplRepository } from '../../../../data/repositories/mading/admin/front-manage-comment-impl-repository/front-comment-impl.repository';
-
-const clientRepoComment = new ClientFrontCommentImplRepository();
-const adminRepoComment = new AdminFrontCommentImplRepository();
-const getUseCase = new FrontGetCommentUseCase(clientRepoComment);
-const delUseCase = new FrontDeleteCommentByIdUseCase(adminRepoComment);
+import { deleteCommentByIdUC, getCommentsUC } from '../../../../di/manage-comment/client/comment-client-container';
 
 export const KelolaKomentar: React.FC = () => {
-  const { executeGetCommentHook, data: dataComment, loading } = useGetComment(getUseCase);
-  const { executeDeleteCommentHook } = useDeleteComment(delUseCase);
+  const { executeGetCommentHook, data: dataComment, loading } = useGetComment(getCommentsUC);
+  const { executeDeleteCommentHook } = useDeleteComment(deleteCommentByIdUC);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -68,7 +60,6 @@ export const KelolaKomentar: React.FC = () => {
 
   return (
     <div className="p-3 p-md-4" style={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-      {/* HEADER */}
       <div className="mb-4">
         <h4 className="fw-bold text-dark mb-1">Moderasi Komentar</h4>
         <p className="text-muted small mb-0">
@@ -76,7 +67,6 @@ export const KelolaKomentar: React.FC = () => {
         </p>
       </div>
 
-      {/* COMMENT LIST */}
       <div className="row g-3 mb-4">
         {currentItems?.length > 0 ? (
           currentItems?.map((e) => (
@@ -134,7 +124,6 @@ export const KelolaKomentar: React.FC = () => {
         )}
       </div>
 
-      {/* PAGINATION NAV */}
       {(dataComment && dataComment?.length || 0) > itemsPerPage && (
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 bg-white p-3 rounded-4 shadow-sm border">
           <span className="text-muted small">

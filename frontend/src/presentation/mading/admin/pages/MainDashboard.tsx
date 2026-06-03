@@ -1,42 +1,34 @@
 import { ArrowLeftToLine, LogOut, TextAlignStart } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard';
 import { KelolaMading } from '../components/KelolaMading';
 import { KelolaSiswa } from '../components/KelolaSiswa';
 import { KelolaKomentar } from '../components/KelolaKomentar';
 import { TambahMading } from '../components/services/TambahMading';
 import { EditMading } from '../components/services/EditMading';
-import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import '../css/main-dashboard.style.css';
 import { Sidebar } from '../components/Sidebar';
 import { DetailAccount } from '../components/DetailAccount';
+import { useAuth } from '../../../auth/hooks/use-auth.hook';
 
 export const MyDashboard: React.FC = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  interface MyTokenPayload {
-    id: string;
-    fullName: string;
-    username: string;
-    role: string;
-  }
-
-  const token = localStorage.getItem('token');
-  const decode = token ? jwtDecode<MyTokenPayload>(token) : null;
+  const { verifyToken, isAuthenticated, user } = useAuth();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!token || decode?.role !== 'admin') {
-        navigate('/e-mading/login');
-      }
+    if (!isAuthenticated || user?.user?.role !== 'admin') {
+      navigate('/e-mading/login');
+      return;
+    }
+    queueMicrotask(() => {
       setIsSidebarOpen(false);
-    }, 0);
-  }, [token, decode?.role, navigate, location.pathname]);
+      verifyToken();
+    });
+  }, [isAuthenticated, user?.user?.role]);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -59,7 +51,7 @@ export const MyDashboard: React.FC = () => {
     }
   };
 
-  if (!token || !decode) return null;
+  if (!isAuthenticated || user?.user.role !== 'admin') return null;
 
   return (
     <div className="d-flex" style={{ backgroundColor: '#f8f9fa', height: '100vh', overflowX: 'hidden', overflowY: 'hidden' }}>
@@ -79,18 +71,18 @@ export const MyDashboard: React.FC = () => {
             <div className="d-flex align-items-center ms-auto position-relative">
               <div className="d-flex align-items-center ps-4" style={{ cursor: 'pointer' }} onClick={() => setIsProfileOpen(!isProfileOpen)}>
                 <div className="text-end me-3 d-none d-sm-block">
-                  <p className="mb-0 fw-bold small text-dark">{decode.fullName}</p>
+                  <p className="mb-0 fw-bold small text-dark">{user?.user.fullName}</p>
                   <p className="mb-0 text-muted small" style={{ fontSize: '11px' }}>
                     Admin SMK-TMPC
                   </p>
                 </div>
-                <img src={`https://ui-avatars.com/api/?name=${decode.fullName}&background=006d32&color=fff`} alt="Admin" className="rounded-circle shadow-sm" width="40" height="40" />
+                <img src={`https://ui-avatars.com/api/?name=${user?.user.fullName}&background=006d32&color=fff`} alt="Admin" className="rounded-circle shadow-sm" width="40" height="40" />
               </div>
 
               <div className={`profile-dropdown shadow-lg p-3 rounded-4 ${isProfileOpen ? 'dropdown-active' : ''}`}>
                 <div className="text-center mb-3">
-                  <img src={`https://ui-avatars.com/api/?name=${decode.fullName}&background=006d32&color=fff`} className="rounded-circle mb-2" width="60" height="60" alt="Admin" />
-                  <h6 className="fw-bold mb-0">{decode.fullName}</h6>
+                  <img src={`https://ui-avatars.com/api/?name=${user?.user.fullName}&background=006d32&color=fff`} className="rounded-circle mb-2" width="60" height="60" alt="Admin" />
+                  <h6 className="fw-bold mb-0">{user?.user.fullName}</h6>
                   <span className="badge bg-success-light text-success rounded-pill px-3 py-1 mt-1" style={{ fontSize: '10px' }}>
                     Administrator
                   </span>

@@ -2,7 +2,7 @@ import { DeleteAllStudentUseCase } from '../../../../../domain/use-cases/mading/
 import { DeleteStudentUseCase } from '../../../../../domain/use-cases/mading/admin/manage-students-logic/delete-student.usecase';
 import { GetStudentByIdUseCase } from '../../../../../domain/use-cases/mading/admin/manage-students-logic/get-student-by-id.usecase';
 import { GetStudentUseCase } from '../../../../../domain/use-cases/mading/admin/manage-students-logic/get-student.usecase';
-import { HttpResponse } from '../../../../helpers/http-response.helper';
+import { HttpResponse } from '../../../../../infrastructure/helpers/http-response.helper';
 
 export class StudentController {
   constructor(

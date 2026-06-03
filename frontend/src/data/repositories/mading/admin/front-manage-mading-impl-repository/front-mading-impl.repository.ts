@@ -1,8 +1,8 @@
-import type { FrontMadingDTO } from '../../../../../core/dto/front-mading.dto';
 import type { FrontMadingRepository } from '../../../../../core/repositories/admin/front-manage-mading-contracts/front-mading.repository';
 import { axiosInstance } from '../../../../sources/axios-instance';
 import { handleApiError } from '../../../../errors/error-handler';
 import type { FrontMadingEntity } from '../../../../../core/entities/front-mading.entity';
+import type { FrontMadingDTO } from '../../../../../core/dto/front-mading.dto';
 
 export class FrontMadingImplRepository implements FrontMadingRepository {
   async createMading(data: FormData): Promise<void> {

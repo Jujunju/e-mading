@@ -1,20 +1,20 @@
 import express, { Router } from 'express';
 import cors from 'cors';
-import fs from 'fs';
-
-import { dirname, join } from 'path';
-import path from 'path';
+import { join, resolve } from 'path';
+import cookieParser from 'cookie-parser';
 
 const serverExpress = express();
-
-serverExpress.use(express.json());
 serverExpress.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: 'http://localhost:5173',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
-serverExpress.use('/uploads', express.static(join(__dirname, '..','uploads')));
+serverExpress.use(express.json());
+serverExpress.use(cookieParser());
+serverExpress.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 serverExpress.use(express.urlencoded({ extended: true }));
 
 export const startServer = (port: number | string, routes: Router[]) => {

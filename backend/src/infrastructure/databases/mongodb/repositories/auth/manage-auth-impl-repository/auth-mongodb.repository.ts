@@ -1,10 +1,11 @@
 import { AuthRepository } from "../../../../../../domain/repositories/auth/auth-repository-contracts/auth.repository";
-import { UserEntity } from "../../../../../../domain/entities/user.entity";
-import { UserModel } from "../../../models/user-mongodb.model";
-import { RegisterDTO } from "../../../../../../interface-adapters/dtos/auth/auth.dtos";
+import { UserEntity } from '../../../../../../domain/entities/user.entity';
+import { UserDoc, UserModel } from '../../../models/user-mongodb.model';
+import { RegisterDTO } from '../../../../../../domain/dtos/auth/auth.dtos';
+import { HydratedDocument, Require_id } from 'mongoose';
 
 export class AuthMongodbRepository implements AuthRepository {
-  private toEntity(r: any): UserEntity {
+  private toEntity(r: UserDoc & Require_id<UserDoc>): UserEntity {
     return new UserEntity(r._id.toString(), r.fullName, r.username, r.password, r.role, r.kelas, r.jurusan, r.createdAt.toString(), r.updatedAt.toString());
   }
 

@@ -1,5 +1,5 @@
 import { GetCommentByIdUseCase } from "../../../../../domain/use-cases/mading/admin/manage-comment-logic/get-comment-by-id.usecase";
-import { HttpResponse } from "../../../../helpers/http-response.helper";
+import { HttpResponse } from '../../../../../infrastructure/helpers/http-response.helper';
 
 export class AdminCommentController {
     constructor(private getCommentByIdUseCase: GetCommentByIdUseCase) {}

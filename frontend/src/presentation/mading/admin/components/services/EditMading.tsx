@@ -1,22 +1,15 @@
 import { AlertCircle, AlignLeft, ImagePlus, Send, Tag, Type, X } from 'lucide-react';
 import React, { useEffect, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FrontMadingImplRepository } from '../../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-import { FrontGetMadingByIdUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/page-edit-mading/front-get-mading-by-id-mading.usecase';
-import { useGetMadingById,  useEditMadingById} from '../../hooks/use-manage-mading-hook/use-mading.hooks';
-import { FrontEditMadingByIdUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/page-edit-mading/front-edit-mading-by-id.usecase';
+import { useGetMadingById, useEditMadingById } from '../../hooks/use-manage-mading-hook/use-mading.hooks';
 import Swal from 'sweetalert2';
-import '../../css/edit-mading.style.css'
-
-const frontMadingImplRepository = new FrontMadingImplRepository();
-const frontGetMadingByIdUseCase = new FrontGetMadingByIdUseCase(frontMadingImplRepository);
-const frontEditMadingByIdUseCase = new FrontEditMadingByIdUseCase(frontMadingImplRepository);
-
+import '../../css/edit-mading.style.css';
+import { editMadingByIdUC, getMadingByIdUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
 
 export const EditMading: React.FC = () => {
   const { id } = useParams();
-  const { executeGetMadingByIdHook, data, loading: loadMading } = useGetMadingById(frontGetMadingByIdUseCase);
-  const { executeEditMadingByIdHook, loading } = useEditMadingById(frontEditMadingByIdUseCase);
+  const { executeGetMadingByIdHook, data, loading: loadMading } = useGetMadingById(getMadingByIdUC);
+  const { executeEditMadingByIdHook, loading } = useEditMadingById(editMadingByIdUC);
 
   const [formData, setFormData] = useState({
     judul: '',
@@ -25,20 +18,20 @@ export const EditMading: React.FC = () => {
     gambar: null as File | null | string,
   });
   const [preview, setPreview] = useState<string | null>(null);
-  const [loadedMading, setLoadedMading] = useState(false)
+  const [loadedMading, setLoadedMading] = useState(false);
 
   useEffect(() => {
     if (id) executeGetMadingByIdHook(id);
   }, [id]);
 
-  if(data && !loadedMading) {
+  if (data && !loadedMading) {
     setFormData({
       judul: data.judul || '',
       kategori: data.kategori || '',
       isi: data.isi || '',
       gambar: data.gambar || null,
     });
-    setLoadedMading(true)
+    setLoadedMading(true);
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,30 +55,25 @@ export const EditMading: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!formData.gambar) {
-      Swal.fire('Gambar Kosong', 'Poster tidak boleh kosong', 'error');
+      Swal.fire('Gambar Kosong', 'Gambar tidak boleh kosong', 'error');
       return;
     }
 
-    executeEditMadingByIdHook(id!, {
-      judul: formData.judul,
-      kategori: formData.kategori,
-      isi: formData.isi,
-      gambar: formData.gambar,
-    });
+    if(id) {
+      executeEditMadingByIdHook(id, formData);
+    }
+
+    if (loadMading) {
+      return (
+        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh' }}>
+          <div className="spinner-border text-success mb-3" role="status"></div>
+          <p className="text-muted fw-medium">Mengambil data mading...</p>
+        </div>
+      );
+    }
   };
-
-  if (loadMading) {
-    return (
-      <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh' }}>
-        <div className="spinner-border text-success mb-3" role="status"></div>
-        <p className="text-muted fw-medium">Mengambil data mading...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="p-4" style={{ backgroundColor: '#fbfbfb', minHeight: '100vh' }}>
-      {/* HEADER */}
       <div className="d-flex justify-content-between align-items-end mb-4">
         <div>
           <h3 className="fw-bold text-dark mb-1" style={{ letterSpacing: '-0.5px' }}>
@@ -98,9 +86,8 @@ export const EditMading: React.FC = () => {
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <div className="row g-4">
-          {/* KIRI: FORM EDITOR */}
           <div className="col-lg-7">
             <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
               <div className="card-header bg-white border-0 pt-4 px-4">
@@ -157,7 +144,6 @@ export const EditMading: React.FC = () => {
             </div>
           </div>
 
-          {/* KANAN: MEDIA & ACTION */}
           <div className="col-lg-5">
             <div className="card border-0 shadow-sm rounded-4 mb-4">
               <div className="card-body p-4">

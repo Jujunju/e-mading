@@ -1,72 +1,73 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { StudentController } from '../../../../../interface-adapters/controllers/mading/admin/manage-student-controller/student.controller';
-import { sendResponse } from '../../../../../interface-adapters/utils/status-response.util';
-import { authMiddleware } from '../../../../middleware/auth/auth.middleware';
+import { sendResponse } from '../../../../utils/status-response.util';
+import { AuthMiddleware } from '../../../../middleware/auth/auth.middleware';
+export class StudentsRoute {
+  private readonly router = Router();
 
-export const getStudent = (studentController: StudentController): Router => {
-  const studentRoute = Router();
+  constructor(
+    private controller: StudentController,
+    private authMidl: AuthMiddleware,
+  ) {
+    this.getStudent();
+    this.getStudentById();
+    this.deleteStudentById();
+    this.deleteAllStudent();
+  }
 
-  studentRoute.get('/student', async (req: Request, res: Response, next: NextFunction) => {
-    const requestData = { body: req.body };
+  getStudent() {
+    this.router.get('/student', async (req: Request, res: Response, next: NextFunction) => {
+      const requestData = { body: req.body };
 
-    const response = await studentController.handleGetStudent(requestData.body);
+      const response = await this.controller.handleGetStudent(requestData.body);
 
-    if (!response) {
-      return;
-    }
-    sendResponse(res, response);
-  });
+      if (!response) {
+        return;
+      }
+      sendResponse(res, response);
+    });
+  }
 
-  return studentRoute;
-};
+  getStudentById(): void {
+    this.router.get('/student/:id', this.authMidl.authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+      const requestData = { param: req.params.id };
 
-export const getStudentById = (studentController: StudentController): Router => {
-  const studentRoute = Router();
+      const response = await this.controller.handleGetStudentById(requestData.param);
 
-  studentRoute.get('/student/:id', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-    const requestData = { param: req.params.id };
+      if (!response) {
+        return;
+      }
+      sendResponse(res, response);
+    });
+  }
 
-    const response = await studentController.handleGetStudentById(requestData.param);
+  deleteStudentById(): void {
+    this.router.delete('/student/:id', this.authMidl.authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+      const requestData = { param: req.params.id };
 
-    if (!response) {
-      return;
-    }
-    sendResponse(res, response);
-  });
+      const response = await this.controller.handleDeleteStudent(requestData.param);
 
-  return studentRoute;
-};
+      if (!response) {
+        return;
+      }
+      sendResponse(res, response);
+    });
+  }
 
-export const deleteStudent = (studentController: StudentController): Router => {
-  const studentRoute = Router();
+  deleteAllStudent(): void {
+    this.router.delete('/student/bulk', this.authMidl.authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+      const { ids } = req.body;
 
-  studentRoute.delete('/student/:id', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-    const requestData = { param: req.params.id };
+      const response = await this.controller.handleDeleteAllStudent(ids);
 
-    const response = await studentController.handleDeleteStudent(requestData.param);
+      if (!response) {
+        return;
+      }
+      sendResponse(res, response);
+    });
+  }
 
-    if (!response) {
-      return;
-    }
-    sendResponse(res, response);
-  });
-
-  return studentRoute;
-};
-
-export const deleteAllStudent = (studentController: StudentController): Router => {
-  const studentRoute = Router();
-
-  studentRoute.delete('/student/bulk', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-    const { ids } = req.body;
-
-    const response = await studentController.handleDeleteAllStudent(ids);
-
-    if (!response) {
-      return;
-    }
-    sendResponse(res, response);
-  });
-
-  return studentRoute;
-};
+  public getRoutes = (): Router => {
+    return this.router;
+  };
+}

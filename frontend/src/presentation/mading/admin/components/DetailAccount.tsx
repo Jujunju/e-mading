@@ -1,27 +1,17 @@
 import React, { useEffect } from 'react';
 import { Calendar, MessageSquare, Clock, User, ShieldCheck, BookOpen, GraduationCap, Hash, Layout, ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
-
-import { FrontStudentImplRepository } from '../../../../data/repositories/mading/admin/front-manage-student-impl-repository/front-student-impl.repository';
-import { FrontGetStudentByIdUseCase } from '../../../../core/usecases/mading/admin/front-manage-student/front-get-student-by-id.usecase';
-import { useGetStudentById } from '../hooks/use-manage-student-hook/use-student.hook';
-import { FrontGetDetailCommentUseCase } from '../../../../core/usecases/mading/admin/front-manage-comment/front-get-detail-comment.usecase';
-import { useGetCommentById } from '../hooks/use-manage-comment-hook/use-comment.hooks';
-import { AdminFrontCommentImplRepository } from '../../../../data/repositories/mading/admin/front-manage-comment-impl-repository/front-comment-impl.repository';
 import type { FrontCommentEntity } from '../../../../core/entities/front-comment.entity';
-
-
-const studentRepo = new FrontStudentImplRepository();
-const repoComment = new AdminFrontCommentImplRepository();
-const getStudentById = new FrontGetStudentByIdUseCase(studentRepo);
-const getCommentById = new FrontGetDetailCommentUseCase(repoComment);
+import { getStudentByIdUC } from '../../../../di/manage-student/student-container';
+import { frontGetDetailCommentUseCase } from '../../../../di/manage-comment/admin/comment-admin-container';
+import { useGetStudentById } from '../hooks/use-manage-student-hook/use-student.hook';
+import { useGetCommentById } from '../hooks/use-manage-comment-hook/use-comment.hooks';
 
 export const DetailAccount: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  
-  const { executeGetStudentByIdHook, data: dataStudent } = useGetStudentById(getStudentById);
-  const { executeGetCommentByIdHook, data: dataComment } = useGetCommentById(getCommentById);
+  const { executeGetStudentByIdHook, data: dataStudent } = useGetStudentById(getStudentByIdUC);
+  const { executeGetCommentByIdHook, data: dataComment } = useGetCommentById(frontGetDetailCommentUseCase);
 
   useEffect(() => {
     if (id) {

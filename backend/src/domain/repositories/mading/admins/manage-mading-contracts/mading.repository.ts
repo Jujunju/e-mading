@@ -1,5 +1,5 @@
 import { MadingEntity } from "../../../../entities/mading.entity";
-import { MadingDTO} from "../../../../../interface-adapters/dtos/mading/mading.dtos";
+import { MadingDTO } from '../../../../../interface-adapters/dtos/mading/mading.dtos';
 
 export interface MadingRepository {
   create(data: MadingDTO): Promise<MadingEntity | null>;

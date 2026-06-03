@@ -2,7 +2,7 @@ import { CreateCommentUseCase } from "../../../../../domain/use-cases/mading/cli
 import { DeleteCommentUseCase } from "../../../../../domain/use-cases/mading/client/user-comment-logic/delete-user-comment.usecase";
 import { EditCommentUseCase } from "../../../../../domain/use-cases/mading/client/user-comment-logic/edit-user-comment.usecase";
 import { GetCommentUseCase } from "../../../../../domain/use-cases/mading/client/user-comment-logic/get-user-comment.usecase";
-import { HttpResponse } from "../../../../helpers/http-response.helper";
+import { HttpResponse } from '../../../../../infrastructure/helpers/http-response.helper';
 
 export class ClientCommentController {
   constructor(

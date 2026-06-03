@@ -2,7 +2,7 @@ import { AuthRepository } from '../../../repositories/auth/auth-repository-contr
 import { AppError } from '../../../errors/app.error';
 import { UseCaseBase } from '../../../base/use-case.base';
 import { AuthService } from '../../../services/auth.service';
-import { RegisterDTO } from '../../../../interface-adapters/dtos/auth/auth.dtos';
+import { RegisterDTO } from '../../../dtos/auth/auth.dtos';
 
 export class RegisterUseCase implements UseCaseBase<RegisterDTO, void> {
   constructor(

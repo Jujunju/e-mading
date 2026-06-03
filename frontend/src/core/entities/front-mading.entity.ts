@@ -4,7 +4,7 @@ export interface FrontMadingEntity {
   slug: string;
   kategori: string;
   isi: string;
-  gambar: string;
+  gambar: string ;
   createdAt: string;
   updatedAt: string;
 }

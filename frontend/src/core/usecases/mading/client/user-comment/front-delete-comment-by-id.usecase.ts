@@ -1,13 +1,12 @@
-
-import type { AdminCommentRepository } from "../../../../repositories/admin/front-manage-comment-contracts/front-comment.repository";
+import type { ClientCommentRepository } from '../../../../repositories/client/client-front-manage-comment-contracts/front-comment.repository';
 
 export class FrontDeleteCommentByIdUseCase {
-  adminCommentRepository: AdminCommentRepository;
-  constructor(adminCommentRepository: AdminCommentRepository) {
-    this.adminCommentRepository = adminCommentRepository;
+  clientCommentRepository: ClientCommentRepository;
+  constructor(clientCommentRepository: ClientCommentRepository) {
+    this.clientCommentRepository = clientCommentRepository;
   }
 
   async execute(id: string) {
-    return await this.adminCommentRepository.deleteComment(id);
+    return await this.clientCommentRepository.deleteCommentById(id);
   }
 }

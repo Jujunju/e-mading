@@ -1,5 +1,5 @@
 import { UseCaseBase } from '../../../../base/use-case.base';
-import { MadingDTO } from '../../../../../interface-adapters/dtos/mading/mading.dtos';
+import { MadingDTO } from '../../../../dtos/mading/mading.dtos';
 import { MadingRepository } from '../../../../repositories/mading/admins/manage-mading-contracts/mading.repository';
 import { AppError } from '../../../../errors/app.error';
 import { MadingResponse } from '../../../../entities/mading.entity';

@@ -1,16 +1,10 @@
-import React, {useState } from 'react';
-import { useLogin } from '../hooks/use-login.hook';
-import { AuthClientImplRepository } from '../../../data/repositories/auth/auth-client-impl.repository';
-import { LoginClientUseCase } from '../../../core/usecases/auth/front-manage-auth-logic/login-client.usecase';
+import React, { useState } from 'react';
 import { Eye, EyeOff, Lock, LogIn, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const authClientImplRepository = new AuthClientImplRepository();
-const loginClientUseCase = new LoginClientUseCase(authClientImplRepository);
+import { useAuth } from '../hooks/use-auth.hook';
 
 export const LoginForm: React.FC = () => {
-
-  const { executeLogin, loading } = useLogin(loginClientUseCase);
+  const { handlerLogin, isSubmitloading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -28,7 +22,7 @@ export const LoginForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    executeLogin({
+    handlerLogin({
       username: formData.username,
       password: formData.password,
     });
@@ -69,9 +63,14 @@ export const LoginForm: React.FC = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn w-100 py-2 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" style={{ backgroundColor: '#006d32', color: '#fff', border: 'none' }} disabled={loading}>
-              {loading ? <span className="spinner-border spinner-border-sm"></span> : <LogIn size={20} />}
-              {loading ? 'Mengecek...' : 'Masuk Sekarang'}
+            <button
+              type="submit"
+              className="btn w-100 py-2 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
+              style={{ backgroundColor: '#006d32', color: '#fff', border: 'none' }}
+              disabled={isSubmitloading}
+            >
+              {isSubmitloading ? <span className="spinner-border spinner-border-sm"></span> : <LogIn size={20} />}
+              {isSubmitloading ? 'Mengecek...' : 'Masuk Sekarang'}
             </button>
 
             <div className="text-center mt-4">

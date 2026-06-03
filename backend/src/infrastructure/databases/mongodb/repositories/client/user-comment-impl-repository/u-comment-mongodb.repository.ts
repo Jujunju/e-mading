@@ -1,5 +1,5 @@
 import { CommentEntity } from "../../../../../../domain/entities/comment.entity";
-import { CommentDTO } from "../../../../../../interface-adapters/dtos/comment/comment.dtos";
+import { CommentDTO } from '../../../../../../domain/dtos/comment/comment.dtos';
 import { UserCommentRepository } from "../../../../../../domain/repositories/mading/clients/user-comment-contracts/u-comment.repository";
 import { CommentModel } from "../../../models/comment-mongodb.model";
 import mongoose from "mongoose";

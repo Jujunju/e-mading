@@ -1,32 +1,22 @@
 import { Search, Trash2, UserRound, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-
-import { useDeleteAllStudent, useDeleteStudent, useGetStudent } from '../hooks/use-manage-student-hook/use-student.hook';
-import { FrontStudentImplRepository } from '../../../../data/repositories/mading/admin/front-manage-student-impl-repository/front-student-impl.repository';
-import { FrontGetStudentUseCase } from '../../../../core/usecases/mading/admin/front-manage-student/front-student.usecase';
-import { FrontDeleteStudentUseCase } from '../../../../core/usecases/mading/admin/front-manage-student/front-delete-student.usecase';
-import { FrontDeleteAllStudentUseCase } from '../../../../core/usecases/mading/admin/front-manage-student/front-delete-all-student.usecase';
-
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import '../css/kelola-siswa.style.css';
 
-const studentRepo = new FrontStudentImplRepository();
-const getStudentUseCase = new FrontGetStudentUseCase(studentRepo);
-const delStudentUseCase = new FrontDeleteStudentUseCase(studentRepo);
-const delStudentAllUseCase = new FrontDeleteAllStudentUseCase(studentRepo);
+import { useDeleteAllStudent, useDeleteStudent, useGetStudent } from '../hooks/use-manage-student-hook/use-student.hook';
+import { deleteAllStudentUC, deleteStudentUC, getStudentsUC } from '../../../../di/manage-student/student-container';
 
 export const KelolaSiswa: React.FC = () => {
-  const { executeStudentHook, data: dataStudent, loading } = useGetStudent(getStudentUseCase);
-  const { executeDeleteStudentHook } = useDeleteStudent(delStudentUseCase);
-  const { executeDeleteAllStudentHook } = useDeleteAllStudent(delStudentAllUseCase);
+  const { executeStudentHook, data: dataStudent, loading } = useGetStudent(getStudentsUC);
+  const { executeDeleteStudentHook } = useDeleteStudent(deleteStudentUC);
+  const { executeDeleteAllStudentHook } = useDeleteAllStudent(deleteAllStudentUC);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedKategoriKelas, setSelectedKategoriKelas] = useState('');
   const [selectedKategoriJurusan, setSelectedKategoriJurusan] = useState('');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  // PAGINATION STATE
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -123,7 +113,6 @@ export const KelolaSiswa: React.FC = () => {
 
   return (
     <div className="p-3 p-md-4">
-      {/* HEADER & SEARCH */}
       <div className="row g-3 align-items-center mb-4">
         <div className="col-md-12 col-lg-6 text-sm-center text-md-center text-lg-start text-md-start">
           <h4 className="fw-bold text-dark mb-1">Info Siswa yang Terdaftar</h4>

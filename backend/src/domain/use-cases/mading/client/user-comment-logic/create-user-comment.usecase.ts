@@ -1,5 +1,5 @@
 import { UseCaseBase } from '../../../../base/use-case.base';
-import { CommentDTO } from '../../../../../interface-adapters/dtos/comment/comment.dtos';
+import { CommentDTO } from '../../../../dtos/comment/comment.dtos';
 import { UserCommentRepository } from '../../../../repositories/mading/clients/user-comment-contracts/u-comment.repository';
 import { CommentEntity } from '../../../../entities/comment.entity';
 import { AppError } from '../../../../errors/app.error';

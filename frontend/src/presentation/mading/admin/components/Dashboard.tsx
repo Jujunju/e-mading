@@ -1,53 +1,37 @@
 import { FileText, Layout, MessageCircle, ShieldCheck, Users } from 'lucide-react';
 import React, { useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGetMading } from '../hooks/use-manage-mading-hook/use-mading.hooks';
-import { FrontMadingImplRepository } from '../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-import { FrontGetMadingUseCase } from '../../../../core/usecases/mading/admin/front-manage-mading/front-mading.usecase';
-import { FrontStudentImplRepository } from '../../../../data/repositories/mading/admin/front-manage-student-impl-repository/front-student-impl.repository';
-import { FrontGetStudentUseCase } from '../../../../core/usecases/mading/admin/front-manage-student/front-student.usecase';
 import { useGetStudent } from '../hooks/use-manage-student-hook/use-student.hook';
-import '../css/dashboard.style.css'
-
-const madingRepo = new FrontMadingImplRepository();
-const getMadingUseCase = new FrontGetMadingUseCase(madingRepo);
-
-const studentRepo = new FrontStudentImplRepository();
-const getStudentUseCase = new FrontGetStudentUseCase(studentRepo);
+import '../css/dashboard.style.css';
+import { getMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
+import { getStudentsUC } from '../../../../di/manage-student/student-container';
+import { useAuth } from '../../../auth/hooks/use-auth.hook';
 
 export const Dashboard: React.FC = () => {
+  const { verifyToken, isAuthenticated, user } = useAuth();
+  const { executeGetMadingHook, data: dataMading, loading: loadMading } = useGetMading(getMadingUC);
+  const { executeStudentHook, data: dataSiswa } = useGetStudent(getStudentsUC);
+
   const navigate = useNavigate();
 
-  interface MyTokenPayload {
-    id: string;
-    fullName: string;
-    role: string;
-  }
-
-  const { executeGetMadingHook, data: dataMading, loading: loadMading } = useGetMading(getMadingUseCase);
-  const { executeStudentHook, data: dataSiswa } = useGetStudent(getStudentUseCase);
-
-  const token = localStorage.getItem('token');
-  const decode = token ? jwtDecode<MyTokenPayload>(token) : null;
-
   useEffect(() => {
-    if (!token || decode?.role !== 'admin') {
+    if (!isAuthenticated || user?.user?.role !== 'admin') {
       navigate('/e-mading/login');
       return;
     }
 
     const fetchData = async () => {
-      await Promise.all([executeGetMadingHook(), executeStudentHook()]);
+      await Promise.all([executeGetMadingHook(), executeStudentHook(), verifyToken()]);
     };
     fetchData();
-  }, [token, decode?.role, navigate]);
+  }, [isAuthenticated, user?.user?.role, navigate]);
 
   const handleRefresh = () => {
     window.location.reload();
   };
 
-  if (!token || decode?.role !== 'admin') return null;
+  if (!isAuthenticated || user?.user.role !== 'admin') return null;
 
   if (loadMading) {
     return (
@@ -74,7 +58,7 @@ export const Dashboard: React.FC = () => {
                   <div className="badge px-3 py-2 mb-3" style={{ backgroundColor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(5px)' }}>
                     <ShieldCheck size={14} className="me-1" /> Administrator System
                   </div>
-                  <h2 className="fw-bold mb-4">Halo, {decode?.fullName}! 👋</h2>
+                  <h2 className="fw-bold mb-4">Halo, {user?.user?.fullName}! 👋</h2>
 
                   <div className="d-flex gap-2 justify-content-center justify-content-md-start">
                     <Link to="/admin/kelola-mading/tambah-mading" className="btn btn-light fw-bold px-4 py-2 rounded-3 text-success shadow-sm transition-all hover-up">

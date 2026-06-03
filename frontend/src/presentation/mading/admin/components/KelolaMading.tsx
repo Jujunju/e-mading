@@ -2,18 +2,9 @@ import { Pencil, Plus, Search, Trash2, ChevronLeft, ChevronRight, Filter, Calend
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDeleteAllMading, useGetMading, useDeleteMadingById } from '../hooks/use-manage-mading-hook/use-mading.hooks';
-import { FrontMadingImplRepository } from '../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-import { FrontGetMadingUseCase } from '../../../../core/usecases/mading/admin/front-manage-mading/front-mading.usecase';
+import '../css/kelola-mading.style.css';
+import { deleteAllMadingUC, deleteMadingByIdUC, getMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
 import Swal from 'sweetalert2';
-import { FrontDeleteAllMadingUseCase } from '../../../../core/usecases/mading/admin/front-manage-mading/front-delete-all-mading.usecase';
-import '../css/kelola-mading.style.css';
-import { FrontDeleteMadingByIdUsecase } from '../../../../core/usecases/mading/admin/front-manage-mading/front-delete-mading-by-id.usecase';
-import '../css/kelola-mading.style.css';
-
-const madingRepo = new FrontMadingImplRepository();
-const getMadingUseCase = new FrontGetMadingUseCase(madingRepo);
-const deleteMadingByIdUseCase = new FrontDeleteMadingByIdUsecase(madingRepo);
-const deleteAllMadingUseCase = new FrontDeleteAllMadingUseCase(madingRepo);
 
 const kategoriColors: Record<string, string> = {
   prestasi: '#ffae00',
@@ -25,9 +16,9 @@ const kategoriColors: Record<string, string> = {
 };
 
 export const KelolaMading: React.FC = () => {
-  const { executeGetMadingHook, data, loading: loadMading } = useGetMading(getMadingUseCase);
-  const { executeDeleteAllMadingHook } = useDeleteAllMading(deleteAllMadingUseCase);
-  const { executeDeleteMadingByIdHook } = useDeleteMadingById(deleteMadingByIdUseCase);
+  const { executeGetMadingHook, data, loading: loadMading } = useGetMading(getMadingUC);
+  const { executeDeleteAllMadingHook} = useDeleteAllMading(deleteAllMadingUC);
+  const { executeDeleteMadingByIdHook } = useDeleteMadingById(deleteMadingByIdUC);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedKategori, setSelectedKategori] = useState('');
@@ -71,7 +62,7 @@ export const KelolaMading: React.FC = () => {
   const handleBulkDelete = async () => {
     const result = await Swal.fire({
       title: 'Hapus Terpilih?',
-      text: `Anda akan menghapus ${selectedIds.length} artikel sekaligus.`,
+      text: `Anda akan menghapus ${selectedIds.length} mading sekaligus.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#dc2626',
@@ -79,11 +70,16 @@ export const KelolaMading: React.FC = () => {
       cancelButtonText: 'Batal',
     });
 
+    console.log(selectedIds)
+
     if (result.isConfirmed) {
-      await executeDeleteAllMadingHook(selectedIds);
+      const res = await executeDeleteAllMadingHook(selectedIds);
       setSelectedIds([]);
       await executeGetMadingHook();
-      Swal.fire('Terhapus!', 'Data berhasil dibersihkan.', 'success');
+
+      if(res) {
+        Swal.fire('Terhapus!', 'Data berhasil dibersihkan.', 'success');
+      }
     }
   };
 
@@ -116,7 +112,6 @@ export const KelolaMading: React.FC = () => {
 
   return (
     <div className="p-3 p-md-4 animate__animated animate__fadeIn" style={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-      {/* 1. TOP BAR: Title & Action */}
 
       <div className="header-content col-12 col-sm-8 text-sm-center text-md-start col-md-12 mx-sm-auto d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>

@@ -1,5 +1,4 @@
-
-import type { FrontMadingRepository } from "../../../../../repositories/admin/front-manage-mading-contracts/front-mading.repository";
+import type { FrontMadingRepository } from '../../../../../repositories/admin/front-manage-mading-contracts/front-mading.repository';
 
 export class FrontCreateMadingUseCase {
   frontMadingRepository: FrontMadingRepository;

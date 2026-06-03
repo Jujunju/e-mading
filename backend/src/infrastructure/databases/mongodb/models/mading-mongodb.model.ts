@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferHydratedDocType } from "mongoose";
 
 const madingSchema = new mongoose.Schema(
   {

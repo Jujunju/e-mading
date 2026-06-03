@@ -1,18 +1,12 @@
 import { ArrowLeft, Book, Layers, User, Lock, EyeOff, Eye, UserPlus, UserRound } from 'lucide-react';
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRegister } from '../hooks/use-register.hook';
-import { AuthClientImplRepository } from '../../../data/repositories/auth/auth-client-impl.repository';
-import { RegisterClientUseCase } from '../../../core/usecases/auth/front-manage-auth-logic/register-client.usecase';
-
-const userClientImplRepository = new AuthClientImplRepository();
-const registerClientUseCase = new RegisterClientUseCase(userClientImplRepository);
+import { useAuth } from '../hooks/use-auth.hook';
 
 export const RegisterForm: React.FC = () => {
-  const { executeRegister, loading } = useRegister(registerClientUseCase);
+  const { handlerRegister, loading } = useAuth();
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -32,7 +26,7 @@ export const RegisterForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    executeRegister({
+    handlerRegister({
       username: formData.username,
       password: formData.password,
       fullName: formData.fullName,
@@ -40,7 +34,6 @@ export const RegisterForm: React.FC = () => {
       kelas: formData.kelas,
       jurusan: formData.jurusan,
     });
-
   };
   return (
     <div>
@@ -66,16 +59,7 @@ export const RegisterForm: React.FC = () => {
                     <span className="input-group-text bg-light border-0">
                       <UserRound size={18} className="text-muted" />
                     </span>
-                    <input
-                      type="text"
-                      name="username"
-                      title="Hanya boleh huruf"
-                      value={formData.username}
-                      onChange={handleChange}
-                      className="form-control border-0 py-2 shadow-none"
-                      placeholder="namadepan_namabelakang"
-                      required
-                    />
+                    <input type="text" name="username" title="Hanya boleh huruf" value={formData.username} onChange={handleChange} className="form-control border-0 py-2 shadow-none" placeholder="namadepan_namabelakang" required />
                   </div>
                 </div>
 

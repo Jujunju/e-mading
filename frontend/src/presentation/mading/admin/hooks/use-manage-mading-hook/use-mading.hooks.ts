@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { FrontGetMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/front-mading.usecase';
-import type { FrontMadingDTO } from '../../../../../core/dto/front-mading.dto';
 import type { FrontCreateMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/page-add-mading/front-create-mading.usecse';
 import type { FrontDeleteMadingByIdUsecase } from '../../../../../core/usecases/mading/admin/front-manage-mading/front-delete-mading-by-id.usecase';
 import Swal from 'sweetalert2';
@@ -9,6 +8,8 @@ import type { FrontMadingEntity } from '../../../../../core/entities/front-madin
 import type { FrontEditMadingByIdUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/page-edit-mading/front-edit-mading-by-id.usecase';
 import type { FrontDeleteAllMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/front-delete-all-mading.usecase';
 import { useNavigate } from 'react-router-dom';
+import type { FrontMadingDTO } from '../../../../../core/dto/front-mading.dto';
+import { handleApiError } from '../../../../../data/errors/error-handler';
 
 export const useCreateMading = (frontCreateMadingUseCase: FrontCreateMadingUseCase) => {
   const [loading, setLoading] = useState(false);
@@ -145,7 +146,6 @@ export const useDeleteMadingById = (frontDeleteMadingByIdUseCase: FrontDeleteMad
   return { executeDeleteMadingByIdHook, loading, error2, success };
 };
 
-
 export const useDeleteAllMading = (frontDeleteAllMadingUseCase: FrontDeleteAllMadingUseCase) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -163,7 +163,9 @@ export const useDeleteAllMading = (frontDeleteAllMadingUseCase: FrontDeleteAllMa
         draggable: true,
       });
       return response;
-    } catch (error) {
+    } catch (error: unknown) {
+      const errMsg = handleApiError(error);
+      Swal.fire('Gagal!', errMsg, 'error');
       if (error instanceof Error) {
         setError2(error.message);
       }

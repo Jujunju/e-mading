@@ -2,16 +2,12 @@ import { AlertCircle, AlignLeft, ImagePlus, Send, Tag, Type, X } from 'lucide-re
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCreateMading } from '../../hooks/use-manage-mading-hook/use-mading.hooks';
-import { FrontMadingImplRepository } from '../../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-import { FrontCreateMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/page-add-mading/front-create-mading.usecse';
 import Swal from 'sweetalert2';
 import '../../css/tambah-mading.style.css'
-
-const frontMadingImplRepository = new FrontMadingImplRepository();
-const frontMadingUseCase = new FrontCreateMadingUseCase(frontMadingImplRepository);
+import { createMadingUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
 
 export const TambahMading: React.FC = () => {
-  const { executeCreateMadingHook, loading } = useCreateMading(frontMadingUseCase);
+  const { executeCreateMadingHook, loading } = useCreateMading(createMadingUC);
 
   const [formData, setFormData] = useState({
     judul: '',
@@ -71,7 +67,6 @@ export const TambahMading: React.FC = () => {
 
   return (
     <div className="p-4" style={{ backgroundColor: '#fbfbfb', minHeight: '100vh' }}>
-      {/* HEADER SECTION */}
       <div className="d-flex justify-content-between align-items-end mb-4">
         <div>
           <h3 className="fw-bold text-dark mb-1" style={{ letterSpacing: '-0.5px' }}>
@@ -86,7 +81,6 @@ export const TambahMading: React.FC = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="row g-4">
-          {/* KIRI: EDITOR AREA */}
           <div className="col-lg-7">
             <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
               <div className="card-header bg-white border-0 pt-4 px-4">
@@ -152,7 +146,6 @@ export const TambahMading: React.FC = () => {
             </div>
           </div>
 
-          {/* KANAN: MEDIA AREA */}
           <div className="col-lg-5">
             <div className="card border-0 shadow-sm rounded-4 mb-4">
               <div className="card-body p-4">

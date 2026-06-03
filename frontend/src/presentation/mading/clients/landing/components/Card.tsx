@@ -1,22 +1,16 @@
 import React, { useEffect } from 'react';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FrontMadingImplRepository } from '../../../../../data/repositories/mading/admin/front-manage-mading-impl-repository/front-mading-impl.repository';
-import { FrontGetMadingUseCase } from '../../../../../core/usecases/mading/admin/front-manage-mading/front-mading.usecase';
 import { useGetMading } from '../../../admin/hooks/use-manage-mading-hook/use-mading.hooks';
 import '../css/card.style.css';
-
-const repo = new FrontMadingImplRepository();
-const getUseCase = new FrontGetMadingUseCase(repo);
+import { getMadingUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
 
 export const Card: React.FC = () => {
-  const { executeGetMadingHook, data: dataMading, loading } = useGetMading(getUseCase);
+  const { executeGetMadingHook, data: dataMading, loading } = useGetMading(getMadingUC);
 
   useEffect(() => {
     executeGetMadingHook();
   }, []);
-
-  
 
   if (loading)
     return (
@@ -26,8 +20,8 @@ export const Card: React.FC = () => {
     );
 
   return (
-    <div className="container py-5" id='berita-terbaru'>
-      <div className="text-center mb-5">
+    <div className="container py-5" id="berita-terbaru">
+      <div className="text-center mb-5 pt-5">
         <h2 className="fw-bold h1" style={{ color: '#0f172a', letterSpacing: '-1px' }}>
           E-Mading Terkini
         </h2>

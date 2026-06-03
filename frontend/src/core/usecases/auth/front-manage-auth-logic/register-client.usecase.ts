@@ -1,5 +1,5 @@
-import type { FrontAuthRepository } from "../../repositories/front-auth.repository";
-import type { FrontAuthRegisterDTO } from "../../../dto/front-auth.dtos";
+import type { FrontAuthRepository } from '../../../repositories/auth/front-manage-auth-contracts/front-auth.repository';
+import type { FrontAuthRegisterDTO } from '../../../dto/front-auth.dtos';
 
 export class RegisterClientUseCase {
   private frontAuthRepository: FrontAuthRepository;

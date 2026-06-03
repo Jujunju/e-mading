@@ -1,6 +1,6 @@
 import { LoginUseCase } from "../../../domain/use-cases/auth/manage-auth-logic/login.usecase";
 import { RegisterUseCase } from "../../../domain/use-cases/auth/manage-auth-logic/register.usecase";
-import { HttpResponse } from "../../helpers/http-response.helper";
+import { HttpResponse } from '../../../infrastructure/helpers/http-response.helper';
 
 export class AuthController {
   constructor(private registerUseCase: RegisterUseCase, private loginUseCase: LoginUseCase) {}

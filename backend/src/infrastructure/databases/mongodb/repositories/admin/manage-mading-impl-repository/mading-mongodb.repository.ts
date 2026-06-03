@@ -1,5 +1,5 @@
 import { MadingEntity } from '../../../../../../domain/entities/mading.entity';
-import { MadingDTO } from '../../../../../../interface-adapters/dtos/mading/mading.dtos';
+import { MadingDTO } from '../../../../../../domain/dtos/mading/mading.dtos';
 import { MadingRepository } from '../../../../../../domain/repositories/mading/admins/manage-mading-contracts/mading.repository';
 import { MadingModel } from '../../../models/mading-mongodb.model';
 import mongoose from 'mongoose';

@@ -1,6 +1,6 @@
 import { GetMadingUseCase } from '../../../../../domain/use-cases/mading/admin/manage-mading-logic/get-mading.usecase';
 import { CreateMadingUseCase } from '../../../../../domain/use-cases/mading/admin/manage-mading-logic/create-mading.usecase';
-import { HttpResponse } from '../../../../helpers/http-response.helper';
+import { HttpResponse } from '../../../../../infrastructure/helpers/http-response.helper';
 import { DeleteMadingByIdUsecase } from '../../../../../domain/use-cases/mading/admin/manage-mading-logic/delete-mading-by-id.usecase';
 import { GetMadingByIdUseCase } from '../../../../../domain/use-cases/mading/admin/manage-mading-logic/get-mading-by-id.usecase';
 import { UpdateMadingByIdUseCase } from '../../../../../domain/use-cases/mading/admin/manage-mading-logic/update-mading-by-id.usecase';
