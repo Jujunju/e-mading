@@ -29,10 +29,10 @@ serverExpress.use((err: any, req: Request, res: Response, next: NextFunction) =>
   sendResponse(res, sendRes);
 });
 
-export const startServer = (port: number | string, routes: Router[]) => {
+export const startServer = (port: number, routes: Router[]) => {
   routes.forEach((route) => {
     serverExpress.use(route);
   });
 
-  serverExpress.listen(port as number, '0.0.0.0', () => console.log(`🛠️  Server running on port ${port}`));
+  serverExpress.listen(port, '0.0.0.0', () => console.log(`🛠️  Server running on port ${port}`));
 };

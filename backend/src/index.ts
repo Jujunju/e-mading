@@ -113,7 +113,7 @@ const bootstrap = async () => {
 
     router.use('/api', madingClientRoute.getRoutes());
 
-    startServer(process.env.PORT as string, [router]);
+    startServer(process.env.PORT as any, [router]);
   } catch (error) {
     console.log(`Terjadi error ${error}`);
   }
