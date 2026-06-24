@@ -44,10 +44,6 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
       if (error instanceof Error) {
         setError(error.message);
         setSuccess(false);
-        Swal.fire({
-          icon: 'error',
-          title: error.message,
-        });
       }
       setIsAuthenticated(false);
     } finally {
