@@ -97,6 +97,14 @@ const bootstrap = async () => {
 
     const router = express.Router();
 
+    router.get('/', (req, res) => {
+      res.status(200).json({
+        status: 'Online',
+        message: 'Backend E-Mading Digital ready bantai!',
+        database: 'Connected',
+      });
+    });
+
     router.use('/api', authRoute.getRoutes());
 
     router.use('/api', userRoute.getRoutes());
