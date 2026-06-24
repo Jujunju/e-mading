@@ -49,7 +49,7 @@ export const Card: React.FC = () => {
                   <p className="text-secondary small mading-excerpt mb-4">{e.isi}</p>
 
                   <div className="mt-auto pt-3 border-top border-light">
-                    <Link to={`/e-mading-by-jujun/detail-mading/${e.slug}`} className="btn-mading-link">
+                    <Link to={`/detail-mading/${e.slug}`} className="btn-mading-link">
                       Baca Selengkapnya <ArrowRight size={18} className="arrow-icon" />
                     </Link>
                   </div>

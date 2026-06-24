@@ -140,7 +140,7 @@ export const RegisterForm: React.FC = () => {
             <div className="text-center mt-4">
               <p className="text-muted small">
                 Sudah punya akun?{' '}
-                <Link to="/e-mading-by-jujun/login" className="fw-bold text-decoration-none" style={{ color: '#006d32' }}>
+                <Link to="/login" className="fw-bold text-decoration-none" style={{ color: '#006d32' }}>
                   Masuk di sini
                 </Link>
               </p>

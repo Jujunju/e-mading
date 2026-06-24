@@ -26,7 +26,7 @@ verifyToken();
   useEffect(() => {
 
     if (!isAuthenticated || user?.user?.role !== 'admin') {
-      navigate('/e-mading-by-jujun/login');
+      navigate('/login');
       return;
     }
     queueMicrotask(() => {
@@ -51,7 +51,7 @@ verifyToken();
         icon: 'success',
         draggable: true,
       });
-      navigate('/e-mading-by-jujun/login');
+      navigate('/login');
     }
   };
 
@@ -93,7 +93,7 @@ verifyToken();
                 </div>
                 <hr className="text-muted opacity-25" />
                 <div className="d-flex flex-column gap-1">
-                  <Link to="/e-mading-by-jujun" className="dropdown-item-custom rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-secondary text-decoration-none small">
+                  <Link to="/" className="dropdown-item-custom rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-secondary text-decoration-none small">
                     <ArrowLeftToLine size={16} /> Beranda Publik
                   </Link>
                   <button onClick={handleLogout} className="dropdown-item-custom rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-danger border-0 bg-transparent w-100 text-start small fw-medium">

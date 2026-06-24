@@ -76,7 +76,7 @@ export const LoginForm: React.FC = () => {
             <div className="text-center mt-4">
               <p className="text-muted small">
                 Belum punya akun?
-                <Link to="/e-mading-by-jujun/register" className="fw-bold text-decoration-none" style={{ color: '#006d32' }}>
+                <Link to="/register" className="fw-bold text-decoration-none" style={{ color: '#006d32' }}>
                   {' '}
                   Daftar Gratis
                 </Link>
