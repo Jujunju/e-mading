@@ -34,5 +34,5 @@ export const startServer = (port: number | string, routes: Router[]) => {
     serverExpress.use(route);
   });
 
-  serverExpress.listen(port, () => console.log(`🛠️  Server running on port ${port}`));
+  serverExpress.listen(port as number, '0.0.0.0', () => console.log(`🛠️  Server running on port ${port}`));
 };
