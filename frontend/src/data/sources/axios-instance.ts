@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://e-mading-backend.vercel.app/api',
   withCredentials: true,
   timeout: 5000,
   // headers: {
