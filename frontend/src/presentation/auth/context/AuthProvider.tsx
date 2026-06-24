@@ -78,7 +78,7 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
 
       if (swal.isConfirmed) {
         if (response?.user?.role !== 'admin') {
-          navigate('/e-mading');
+          navigate('/');
         } else {
           navigate('/admin/dashboard');
         }
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
       });
 
       if (swal.isConfirmed) {
-        navigate('/e-mading/login');
+        navigate('/login');
       }
 
       return result;

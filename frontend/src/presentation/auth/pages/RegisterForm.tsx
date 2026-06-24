@@ -40,7 +40,7 @@ export const RegisterForm: React.FC = () => {
       <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5 px-3">
         <div className="card border-0 shadow-lg rounded-4 overflow-hidden" style={{ maxWidth: '500px', width: '100%' }}>
           <div className="card-body p-4 p-md-5">
-            <Link to="/e-mading/login" className="text-decoration-none small fw-bold d-flex align-items-center gap-1 mb-4 text-muted">
+            <Link to="/login" className="text-decoration-none small fw-bold d-flex align-items-center gap-1 mb-4 text-muted">
               <ArrowLeft size={16} /> Kembali ke Login
             </Link>
 

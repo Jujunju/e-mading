@@ -2,7 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 
 import { connectDB } from './infrastructure/databases/mongodb/config/db-mongodb.config';
-import { startServer } from './infrastructure/webserver/server';
+import { attechRoute, startServer } from './infrastructure/webserver/server';
 import { CreateUserUseCase } from './domain/use-cases/user/manage-user-logic/create-user.usecase';
 import { UserMongodbRepository } from './infrastructure/databases/mongodb/repositories/user/manage-user-impl-repository/user-mongodb.repository';
 import { AuthBcrypt } from './infrastructure/security/bcrypt.security';
@@ -43,7 +43,6 @@ import { UserRoute } from './infrastructure/webserver/routes/user/user';
 
 const bootstrap = async () => {
   try {
-
     // DB
     await connectDB();
 
@@ -51,7 +50,7 @@ const bootstrap = async () => {
     const authBcrypt: AuthBcrypt = new AuthBcrypt();
     const iTokenJwt: ITokenJwt = new ITokenJwt();
     const authMiddleware = new AuthMiddleware(iTokenJwt);
-    
+
     // Auth
     const iUserRepositories: UserMongodbRepository = new UserMongodbRepository();
     const loginUseCase: LoginUseCase = new LoginUseCase(iUserRepositories, authBcrypt, iTokenJwt);
@@ -60,8 +59,8 @@ const bootstrap = async () => {
 
     // User
     const createUserUseCase: CreateUserUseCase = new CreateUserUseCase(iUserRepositories, authBcrypt);
-    const userController: UserController = new UserController(createUserUseCase)
-    const userRoute = new UserRoute(userController)
+    const userController: UserController = new UserController(createUserUseCase);
+    const userRoute = new UserRoute(userController);
 
     // Mading Admin
     const madingMongodbRepository: MadingMongodbRepository = new MadingMongodbRepository();
@@ -98,7 +97,6 @@ const bootstrap = async () => {
     const commentController: ClientCommentController = new ClientCommentController(createCommentUseCase, getCommentUseCase, editCommentUseCase, deleteCommentUseCase);
     const commentRoute = new CommentClientRoute(commentController, authMiddleware);
 
-
     const router = express.Router();
 
     router.use('/api', authRoute.getRoutes());
@@ -106,16 +104,20 @@ const bootstrap = async () => {
     router.use('/api', userRoute.getRoutes());
 
     router.use('/api', studentRoute.getRoutes());
-    
+
     router.use('/api', commentRoute.getRoutes());
-    
+
     router.use('/api', madingAdminRoute.getRoutes());
 
     router.use('/api', madingClientRoute.getRoutes());
 
     const PORT = Number(process.env.PORT);
 
-    startServer(PORT, [router]);
+    attechRoute([router]);
+
+    if (process.env.NODE_ENV !== 'production') {
+      startServer(PORT, [router]);
+    }
   } catch (error) {
     console.log(`Terjadi error ${error}`);
   }
