@@ -2,7 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 
 import { connectDB } from './infrastructure/databases/mongodb/config/db-mongodb.config';
-import { attechRoute, startServer } from './infrastructure/webserver/server';
+import { attechRoute, serverExpress, startServer } from './infrastructure/webserver/server';
 import { CreateUserUseCase } from './domain/use-cases/user/manage-user-logic/create-user.usecase';
 import { UserMongodbRepository } from './infrastructure/databases/mongodb/repositories/user/manage-user-impl-repository/user-mongodb.repository';
 import { AuthBcrypt } from './infrastructure/security/bcrypt.security';
@@ -118,9 +118,11 @@ const bootstrap = async () => {
     if (process.env.NODE_ENV !== 'production') {
       startServer(PORT, [router]);
     }
+    
   } catch (error) {
     console.log(`Terjadi error ${error}`);
   }
 };
 
 bootstrap();
+export default serverExpress;

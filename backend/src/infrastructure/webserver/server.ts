@@ -4,7 +4,7 @@ import { join, resolve } from 'path';
 import cookieParser from 'cookie-parser';
 import { sendResponse } from '../utils/status-response.util';
 
-const serverExpress = express();
+export const serverExpress = express();
 serverExpress.use(
   cors({
     origin: ['http://localhost:5173', 'https://e-mading-by-jujun.vercel.app'],
@@ -41,4 +41,3 @@ export const startServer = (port: number, routes: Router[]) => {
   serverExpress.listen(port, '0.0.0.0', () => console.log(`🛠️  Server running on port ${port}`));
 };
 
-export default serverExpress
