@@ -13,23 +13,23 @@ export const routesApp = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: '/e-mading/register',
+        path: '/e-mading-by-jujun/register',
         element: <RegisterForm />,
       },
       {
-        path: '/e-mading/login',
+        path: '/e-mading-by-jujun/login',
         element: <LoginForm />,
       },
       {
-        path: '/e-mading',
+        path: '/e-mading-by-jujun',
         element: <HomePage />,
       },
       {
-        path: '/e-mading/my-profile/:id',
+        path: '/e-mading-by-jujun/my-profile/:id',
         element: <MyProfile />,
       },
       {
-        path: '/e-mading/detail-mading/:slug',
+        path: '/e-mading-by-jujun/detail-mading/:slug',
         element: <DetailMading />,
       },
       {

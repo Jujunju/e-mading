@@ -29,7 +29,7 @@ export const MyProfile: React.FC = () => {
       <Navbar />
       <div className="container px-4 shadow-lg py-3 rounded-4 bg-white" style={{ maxWidth: '800px', marginTop: '120px', border: '1px solid #f1f5f9' }}>
         <div className="mb-4">
-          <Link to="/e-mading" className="btn btn-light border-0 shadow-sm rounded-pill px-3 d-flex align-items-center gap-2 text-success" style={{ width: 'fit-content' }}>
+          <Link to="/e-mading-by-jujun" className="btn btn-light border-0 shadow-sm rounded-pill px-3 d-flex align-items-center gap-2 text-success" style={{ width: 'fit-content' }}>
             <ChevronLeft size={18} /> <span className="fw-medium">Kembali</span>
           </Link>
         </div>

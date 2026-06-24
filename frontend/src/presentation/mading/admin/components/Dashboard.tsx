@@ -23,7 +23,7 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated || user?.user?.role !== 'admin') {
-      navigate('/e-mading/login');
+      navigate('/e-mading-by-jujun/login');
       return;
     }
 

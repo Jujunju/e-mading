@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
       }}
     >
       <div className="container">
-        <Link className="navbar-brand d-flex align-items-center gap-2 text-decoration-none" to="/e-mading">
+        <Link className="navbar-brand d-flex align-items-center gap-2 text-decoration-none" to="/e-mading-by-jujun">
           <div className="rounded-3 bg-success p-2 d-flex align-items-center justify-content-center shadow-sm" style={{ width: '40px', height: '40px' }}>
             <span className="text-white fw-bold h4 mb-0">E</span>
           </div>
@@ -89,10 +89,10 @@ export const Navbar: React.FC = () => {
         <div className="d-flex align-items-center gap-3">
           {!isAuthenticated ? (
             <div className="d-flex gap-2">
-              <Link to="/e-mading/login" className="btn btn-light px-4 rounded-pill fw-bold text-success border-0">
+              <Link to="/e-mading-by-jujun/login" className="btn btn-light px-4 rounded-pill fw-bold text-success border-0">
                 Masuk
               </Link>
-              <Link to="/e-mading/register" className="btn btn-success px-4 rounded-pill fw-bold shadow-sm border-0">
+              <Link to="/e-mading-by-jujun/register" className="btn btn-success px-4 rounded-pill fw-bold shadow-sm border-0">
                 Daftar
               </Link>
             </div>
@@ -111,15 +111,15 @@ export const Navbar: React.FC = () => {
                 </div>
                 <hr className="text-muted opacity-25" />
                 <div className="d-flex flex-column gap-1 ">
-                  {location.pathname === `/e-mading/my-profile/${user?.user?.id}` ? (
+                  {location.pathname === `/e-mading-by-jujun/my-profile/${user?.user?.id}` ? (
                     <div>
-                      <Link to="/e-mading" className="dropdown-item-custom text-success rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-secondary text-decoration-none small">
+                      <Link to="/e-mading-by-jujun" className="dropdown-item-custom text-success rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-secondary text-decoration-none small">
                         <ArrowLeftToLine size={16} /> Beranda Publik
                       </Link>
                     </div>
                   ) : (
                     <div className="">
-                      <Link to={`/e-mading/my-profile/${user?.user?.id}`} className="dropdown-item-custom rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-success text-decoration-none fw-medium">
+                      <Link to={`/e-mading-by-jujun/my-profile/${user?.user?.id}`} className="dropdown-item-custom rounded-3 d-flex align-items-center gap-2 py-2 px-3 text-success text-decoration-none fw-medium">
                         <User size={16} /> Profile
                       </Link>
                     </div>
