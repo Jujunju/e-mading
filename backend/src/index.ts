@@ -43,8 +43,6 @@ import { UserRoute } from './infrastructure/webserver/routes/user/user';
 
 const bootstrap = async () => {
   try {
-    // DB
-    await connectDB();
 
     // Security
     const authBcrypt: AuthBcrypt = new AuthBcrypt();
@@ -117,6 +115,9 @@ const bootstrap = async () => {
 
     if (process.env.NODE_ENV !== 'production') {
       startServer(PORT, [router]);
+    } else {
+      // DB
+      await connectDB();
     }
     
   } catch (error) {
