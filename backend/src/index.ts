@@ -123,10 +123,8 @@ const bootstrap = async () => {
 
     if (process.env.NODE_ENV !== 'production') {
       startServer(PORT, [router]);
-    } else {
-      // DB
-      await connectDB();
     }
+    await connectDB();
     
   } catch (error) {
     console.log(`Terjadi error ${error}`);

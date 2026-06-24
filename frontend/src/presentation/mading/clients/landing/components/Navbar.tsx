@@ -13,7 +13,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     verifyToken();
-  }, [isAuthenticated]);
+  }, []);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
