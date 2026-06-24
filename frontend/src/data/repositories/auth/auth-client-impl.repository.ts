@@ -26,7 +26,7 @@ export class AuthClientImplRepository implements FrontAuthRepository {
 
   async checkAuthUser(): Promise<FrontAuthLoginResponse | null> {
     try {
-      const response = await axiosInstance.post('/auth/me', {});
+      const response = await axiosInstance.post('/auth/me', null);
 
       return response.data;
     } catch (error) {

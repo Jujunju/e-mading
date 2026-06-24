@@ -28,7 +28,7 @@ export const Navbar: React.FC = () => {
     });
 
     if (result.isConfirmed) {
-      handlerLogout();
+      await handlerLogout();
       await Swal.fire({
         title: 'Berhasil logout!',
         icon: 'success',

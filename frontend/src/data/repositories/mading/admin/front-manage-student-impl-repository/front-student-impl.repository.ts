@@ -32,7 +32,6 @@ export class FrontStudentImplRepository implements FrontStudentRepository {
 
   async bulkDeleteStudentByIds(ids: string[]): Promise<void> {
     try {
-      console.log(ids);
       const response = await axiosInstance.delete(`/student/bulk`, { data: { ids } });
       return response.data?.data;
     } catch (error) {

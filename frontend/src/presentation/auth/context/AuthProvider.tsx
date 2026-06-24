@@ -33,13 +33,11 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
   const verifyToken = async () => {
     try {
       setAuthLoading(true);
-      setSuccess(false);
 
       const response = await checkAuthUC.execute();
 
       setIsAuthenticated(true);
       setUser(response);
-      setSuccess(true);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
