@@ -13,7 +13,7 @@ export const routesApp = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <HomePage />,
       },
       {
@@ -33,7 +33,7 @@ export const routesApp = createBrowserRouter([
         element: <DetailMading />,
       },
       {
-        path: '/admin/*',
+        path: 'admin/*',
         element: <MyDashboard />,
       },
     ],
