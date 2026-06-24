@@ -1,22 +1,29 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      unique: true,
+      index: true,
+      immutable: true,
+    },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'user',
     },
     madingId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'mading',
     },
     isiKomentar: {
       type: String,
-      required: true
+      required: true,
     },
   },
   {
     timestamps: true,
+    _id: true,
   },
 );
 

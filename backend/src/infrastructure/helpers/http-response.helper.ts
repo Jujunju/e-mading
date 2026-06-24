@@ -23,24 +23,10 @@ export class HttpResponse {
             }
         }
 
-        if(err.name === "ValidationError") {
-            return {
-              statusCode: 400,
-              body: { error: err.message },
-            };
-        }
-
-        if(err.code === 11000) {
-            return {
-              statusCode: 400,
-              body: { error: 'Email tersebut sudah terdaftar!' },
-            };
-        }
-
         return {
-            statusCode: 500,
-            body: {error: "Terjadi kesalahan server"}
-        }
+          statusCode: 500,
+          body: { error: 'Terjadi kesalahan internal serverr' },
+        };
 
     }
 }

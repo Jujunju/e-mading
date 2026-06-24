@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import type { FrontCommentDTO } from '../../../../../../core/dto/front-comment.dtos';
-import type { FrontCommentUseCase } from '../../../../../../core/usecases/mading/client/user-comment/front-comment.usecase';
+import type { FrontCreateCommentUseCase } from '../../../../../../core/usecases/mading/client/user-comment/front-comment.usecase';
 import type { FrontCommentEntity } from '../../../../../../core/entities/front-comment.entity';
-import type { FrontGetCommentUseCase } from '../../../../../../core/usecases/mading/client/user-comment/front-get-comment.usecase';
-import type { FrontEditCommentUseCase } from '../../../../../../core/usecases/mading/client/user-comment/front-edit-comment.usecase';
+import type { FrontGetAllCommentUseCase } from '../../../../../../core/usecases/comment/front-manage-comment/front-get-all-comment.usecase';
+import type { FrontUpdateCommentByIdUseCase } from '../../../../../../core/usecases/mading/client/user-comment/front-update-comment.usecase';
 
-export const useSaveComment = (frontCommentUseCase: FrontCommentUseCase) => {
+export const useSaveComment = (frontCreateCommentUseCase: FrontCreateCommentUseCase) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const executeCommentHook = async (data: FrontCommentDTO) => {
     try {
       setLoading(true);
-      const response = await frontCommentUseCase.execute(data);
+      const response = await frontCreateCommentUseCase.execute(data);
       return response;
     } catch (error) {
       if (error instanceof Error) {
@@ -26,14 +26,14 @@ export const useSaveComment = (frontCommentUseCase: FrontCommentUseCase) => {
   return { executeCommentHook, loading, error };
 };
 
-export const useEditComment = (frontEditCommentUseCase: FrontEditCommentUseCase) => {
+export const useEditComment = (frontUpdateCommentByIdUseCase: FrontUpdateCommentByIdUseCase) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const executeEditCommentHook = async (id: string, data: FrontCommentDTO) => {
     try {
       setLoading(true);
-      const response = await frontEditCommentUseCase.execute(id, data);
+      const response = await frontUpdateCommentByIdUseCase.execute(id, data);
       return response;
     } catch (error) {
       if (error instanceof Error) {
@@ -47,7 +47,7 @@ export const useEditComment = (frontEditCommentUseCase: FrontEditCommentUseCase)
   return { executeEditCommentHook, loading, error };
 };
 
-export const useGetComment = (getCommentUseCase: FrontGetCommentUseCase) => {
+export const useGetComment = (frontGetAllCommentUseCase: FrontGetAllCommentUseCase) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<FrontCommentEntity[] | null>(null);
@@ -55,7 +55,7 @@ export const useGetComment = (getCommentUseCase: FrontGetCommentUseCase) => {
   const executeGetCommentHook = async () => {
     try {
       setLoading(true);
-      const response = await getCommentUseCase.execute();
+      const response = await frontGetAllCommentUseCase.execute();
       setData(response);
       return response;
     } catch (error) {

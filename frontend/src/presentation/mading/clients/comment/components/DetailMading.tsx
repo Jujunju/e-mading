@@ -7,16 +7,17 @@ import '../css/detail-mading.style.css';
 import { useDeleteComment } from '../../../admin/hooks/use-manage-comment-hook/use-comment.hooks';
 import Swal from 'sweetalert2';
 import { getMadingBySlug } from '../../../../../di/manage-mading/client/client-mading-container';
-import { createCommentUC, deleteCommentByIdUC, editCommentByIdUC, getCommentsUC } from '../../../../../di/manage-comment/client/comment-client-container';
+import { createCommentUC, editCommentByIdUC } from '../../../../../di/manage-comment/client/comment-client-container';
 import { useGetMadingBySlug } from '../hooks/use-user-comment/use-user-mading.hooks';
 import { useAuth } from '../../../../auth/hooks/use-auth.hook';
+import { frontGetAllCommentUseCase, deleteCommentByIdUC } from '../../../../../di/manage-comment/comment-admin-container';
 
 export const DetailMading: React.FC = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
   const { executeGetMadingBySlugHook, data: dataMading } = useGetMadingBySlug(getMadingBySlug);
-  const { executeGetCommentHook, data: dataComment } = useGetComment(getCommentsUC);
+  const { executeGetCommentHook, data: dataComment } = useGetComment(frontGetAllCommentUseCase);
   const { executeCommentHook } = useSaveComment(createCommentUC);
   const { executeEditCommentHook } = useEditComment(editCommentByIdUC);
   const { executeDeleteCommentHook } = useDeleteComment(deleteCommentByIdUC);
@@ -192,7 +193,7 @@ export const DetailMading: React.FC = () => {
                                 • {e.role}
                               </span>
                             </div>
-                            <small className="text-muted">{new Date(e.createdAt).toLocaleDateString('id-ID')}</small>
+                            <small className="text-muted">{e.createdAt}</small>
                           </div>
                           <p className="text-secondary mt-3 mb-0">{e.isiKomentar}</p>
 
@@ -225,7 +226,7 @@ export const DetailMading: React.FC = () => {
               </div>
             </div>
 
-            <div className="fixed-bottom py-4 bg-white bg-opacity-75 backdrop-blur shadow-lg border-top">
+            <div className="fixed-bottom py-4 bg-light shadow-lg border-top">
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-lg-7">
@@ -241,7 +242,7 @@ export const DetailMading: React.FC = () => {
                     )}
                     <div className="card border-0 shadow-sm rounded-pill p-1 border">
                       <div className="d-flex align-items-center px-2">
-                        <textarea className="form-control border-0 shadow-none py-2 px-3" value={comment} onChange={(e) => setComment(e.target.value)} rows={1} placeholder="Tulis pendapatmu..." style={{ resize: 'none' }} />
+                        <textarea className="form-control border-0 text-dark shadow-none py-2 px-3" value={comment} onChange={(e) => setComment(e.target.value)} rows={1} placeholder="Tulis pendapatmu..." style={{ resize: 'none' }} />
                         <button
                           onClick={handleCommentSubmit}
                           className={`btn rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm text-white transition-all ${editingId ? 'btn-warning rotate-icon' : 'btn-success'}`}

@@ -7,7 +7,7 @@ export class AuthMiddleware {
     this.authMiddleware = this.authMiddleware.bind(this);
   }
 
-  authMiddleware(req: Request, res: Response, next: NextFunction): void {
+  async authMiddleware(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.access_token;
 
     if (!token) {
@@ -15,7 +15,7 @@ export class AuthMiddleware {
     }
 
     try {
-      const decoded = this.tokenSecurity.verifyToken(token);
+      const decoded = await this.tokenSecurity.verifyToken(token);
 
       if (!decoded) {
         return next(new AppError('Token tidak valid atau kadaluarsa', 401));

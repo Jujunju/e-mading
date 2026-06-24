@@ -1,11 +1,10 @@
-import type { FrontMadingRepository } from '../../../../../core/repositories/admin/front-manage-mading-contracts/front-mading.repository';
+import type { FrontMadingRepository } from '../../../../../core/repositories/mading/admin/front-manage-mading-contracts/front-mading.repository';
 import { axiosInstance } from '../../../../sources/axios-instance';
 import { handleApiError } from '../../../../errors/error-handler';
 import type { FrontMadingEntity } from '../../../../../core/entities/front-mading.entity';
-import type { FrontMadingDTO } from '../../../../../core/dto/front-mading.dto';
 
 export class FrontMadingImplRepository implements FrontMadingRepository {
-  async createMading(data: FormData): Promise<void> {
+  async create(data: FormData): Promise<void> {
     try {
       const response = await axiosInstance.post('/mading', data);
       return response.data?.data;
@@ -23,7 +22,7 @@ export class FrontMadingImplRepository implements FrontMadingRepository {
     }
   }
 
-  async updateMadingById(id: string, data: FrontMadingDTO): Promise<void> {
+  async updateMadingById(id: string, data: FormData): Promise<void> {
     try {
       const response = await axiosInstance.put(`/mading/${id}`, data);
       return response.data?.data;
@@ -32,7 +31,7 @@ export class FrontMadingImplRepository implements FrontMadingRepository {
     }
   }
 
-  async getMading(): Promise<FrontMadingEntity[] | null> {
+  async getAllMading(): Promise<FrontMadingEntity[] | null> {
     try {
       const response = await axiosInstance.get('/mading');
       return response.data?.data;
@@ -50,7 +49,7 @@ export class FrontMadingImplRepository implements FrontMadingRepository {
     }
   }
 
-  async deleteAllMading(ids: string[]): Promise<void> {
+  async bulkDeleteMadingByIds(ids: string[]): Promise<void> {
     try {
       const response = await axiosInstance.delete('/mading/bulk', { data: { ids } });
       return response.data?.data;

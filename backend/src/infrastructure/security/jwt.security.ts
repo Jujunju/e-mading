@@ -1,15 +1,19 @@
-import { TokenService } from '../../domain/services/token.service';
+import { TokenSecurity } from '../../domain/security/token.security';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { AppError } from '../../domain/errors/app.error';
+import { promisify } from 'node:util';
 
-export class ITokenJwt implements TokenService {
-  generateToken(payload: any): string {
-    return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '7d' });
+const signAsync = promisify<string, string, jwt.SignOptions, string>(jwt.sign)
+const verifyAsync = promisify<string, string>(jwt.verify)
+
+export class ITokenJwt implements TokenSecurity {
+  async generateToken(payload: any): Promise<string> {
+    return await signAsync(payload, process.env.JWT_SECRET as string, { expiresIn: '7d' });
   }
-  verifyToken(token: string) {
+  async verifyToken(token: string): Promise<any> {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET!);
+      return await verifyAsync(token, process.env.JWT_SECRET as string);
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         throw new AppError('Token sudah kedaluwarsa', 401);

@@ -1,4 +1,4 @@
-import type { FrontMadingRepository } from '../../../../../repositories/admin/front-manage-mading-contracts/front-mading.repository';
+import type { FrontMadingRepository } from '../../../../../repositories/mading/admin/front-manage-mading-contracts/front-mading.repository';
 
 export class FrontCreateMadingUseCase {
   frontMadingRepository: FrontMadingRepository;
@@ -7,6 +7,6 @@ export class FrontCreateMadingUseCase {
   }
 
   async execute(data: FormData) {
-    return await this.frontMadingRepository.createMading(data);
+    return await this.frontMadingRepository.create(data);
   }
 }

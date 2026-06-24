@@ -1,4 +1,4 @@
-import type { FrontStudentRepository } from "../../../../repositories/admin/front-manage-student-contracts/front-student.repository";
+import type { FrontStudentRepository } from '../../../../repositories/mading/admin/front-manage-student-contracts/front-student.repository';
 
 export class FrontGetStudentByIdUseCase {
   frontStudentRepository: FrontStudentRepository;

@@ -6,7 +6,7 @@ import { KelolaMading } from '../components/KelolaMading';
 import { KelolaSiswa } from '../components/KelolaSiswa';
 import { KelolaKomentar } from '../components/KelolaKomentar';
 import { TambahMading } from '../components/services/TambahMading';
-import { EditMading } from '../components/services/EditMading';
+import { UpdateMading } from '../components/services/UpdateMading';
 import Swal from 'sweetalert2';
 import '../css/main-dashboard.style.css';
 import { Sidebar } from '../components/Sidebar';
@@ -20,15 +20,19 @@ export const MyDashboard: React.FC = () => {
   const { verifyToken, isAuthenticated, user } = useAuth();
 
   useEffect(() => {
+verifyToken();
+  }, [])
+
+  useEffect(() => {
+
     if (!isAuthenticated || user?.user?.role !== 'admin') {
       navigate('/e-mading/login');
       return;
     }
     queueMicrotask(() => {
       setIsSidebarOpen(false);
-      verifyToken();
     });
-  }, [isAuthenticated, user?.user?.role]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleLogout = async () => {
     const result = await Swal.fire({
@@ -106,7 +110,7 @@ export const MyDashboard: React.FC = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="kelola-mading/*" element={<KelolaMading />} />
             <Route path="kelola-mading/tambah-mading" element={<TambahMading />} />
-            <Route path="kelola-mading/edit-mading/:id" element={<EditMading />} />
+            <Route path="kelola-mading/edit-mading/:id" element={<UpdateMading />} />
             <Route path="data-siswa" element={<KelolaSiswa />} />
             <Route path="data-siswa/detail-account/:id" element={<DetailAccount />} />
             <Route path="data-komentar" element={<KelolaKomentar />} />

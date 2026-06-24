@@ -3,31 +3,26 @@ import { Clock, MessageSquare, Calendar, ChevronRight, User, ChevronLeft } from 
 import { Link, useParams } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { useGetStudentById } from '../../../admin/hooks/use-manage-student-hook/use-student.hook';
-import { useGetCommentById } from '../../../admin/hooks/use-manage-comment-hook/use-comment.hooks';
+import { useGetAllComment } from '../../../admin/hooks/use-manage-comment-hook/use-comment.hooks';
 import { getStudentByIdUC } from '../../../../../di/manage-student/student-container';
-import { frontGetDetailCommentUseCase } from '../../../../../di/manage-comment/admin/comment-admin-container';
-
+import { frontGetAllCommentUseCase } from '../../../../../di/manage-comment/comment-admin-container';
 
 export const MyProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const { executeGetStudentByIdHook, data: studentData } = useGetStudentById(getStudentByIdUC);
-  const { executeGetCommentByIdHook, data: commentsData } = useGetCommentById(frontGetDetailCommentUseCase);
+  const { executeGetAllCommentHook, data: commentsData } = useGetAllComment(frontGetAllCommentUseCase);
 
   useEffect(() => {
     if (id) {
       executeGetStudentByIdHook(id);
-      executeGetCommentByIdHook(id);
+      executeGetAllCommentHook();
     }
   }, [id]);
 
-  const student = {
-    fullName: studentData?.fullName || 'Memuat...',
-    username: studentData?.username || '...',
-    class: `${studentData?.kelas || ''} ${studentData?.jurusan || ''}`,
-    joinedDate: studentData?.createdAt ? new Date(studentData.createdAt).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }) : '-',
-    totalComments: commentsData?.length || 0,
-  };
+  const userCommentLength = commentsData?.filter((comment) => comment.userId === studentData?.id).length;
+  const comment= commentsData?.filter((comment) => comment.userId === studentData?.id);
+
 
   return (
     <div className="min-vh-100" style={{ backgroundColor: '#ffffff' }}>
@@ -40,24 +35,24 @@ export const MyProfile: React.FC = () => {
         </div>
 
         <div className="d-flex align-items-center gap-4 mb-5 pb-4 border-bottom">
-          <img src={`https://ui-avatars.com/api/?name=${student.fullName}&background=006d32&color=fff&bold=true&size=128`} className="rounded-circle shadow-sm" width="80" height="80" alt="avatar" />
+          <img src={`https://ui-avatars.com/api/?name=${studentData?.fullName}&background=006d32&color=fff&bold=true&size=128`} className="rounded-circle shadow-sm" width="80" height="80" alt="avatar" />
           <div>
-            <h3 className="fw-bolder mb-1 text-dark">{student.fullName}</h3>
+            <h3 className="fw-bolder mb-1 text-dark">{studentData?.fullName}</h3>
             <div className="d-flex align-items-center gap-3 text-muted small">
               <span className="d-flex align-items-center gap-1">
-                <User size={14} className="text-success" /> {student.class}
+                <User size={14} className="text-success" /> {studentData?.kelas}
               </span>
-              <span className="d-flex align-items-center gap-1 text-success fw-bold">@{student.username}</span>
+              <span className="d-flex align-items-center gap-1 text-success fw-bold">@{studentData?.username}</span>
             </div>
           </div>
         </div>
 
         <div className="row g-3 mb-5">
           <div className="col-md-6">
-            <StatsCard label="Total Kontribusi" value={`${student.totalComments} Komentar`} icon={<MessageSquare size={20} />} />
+            <StatsCard label="Total Kontribusi" value={`${userCommentLength} Komentar`} icon={<MessageSquare size={20} />} />
           </div>
           <div className="col-md-6">
-            <StatsCard label="Terdaftar Sejak" value={student.joinedDate} icon={<Calendar size={20} />} />
+            <StatsCard label="Terdaftar Sejak" value={studentData?.createdAt as string} icon={<Calendar size={20} />} />
           </div>
         </div>
 
@@ -70,8 +65,8 @@ export const MyProfile: React.FC = () => {
           </div>
 
           <div className="list-group list-group-flush">
-            {commentsData && commentsData.length > 0 ? (
-              commentsData.map((comment) => (
+            {comment && comment.length > 0 ? (
+              comment.map((comment) => (
                 <div key={comment.id} className="list-group-item px-0 py-3 border-0 border-bottom d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <div className="bg-success rounded-circle" style={{ width: '6px', height: '6px' }}></div>
@@ -81,7 +76,7 @@ export const MyProfile: React.FC = () => {
                       </p>
                       <p className="mb-1 text-muted small italic">"{comment.isiKomentar}"</p>
                       <small className="text-muted" style={{ fontSize: '11px' }}>
-                        {new Date(comment.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        {comment.createdAt}
                       </small>
                     </div>
                   </div>
@@ -100,7 +95,7 @@ export const MyProfile: React.FC = () => {
   );
 };
 
-const StatsCard = ({ label, value, icon }: { label: string; value: string; icon: any }) => (
+const StatsCard = ({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) => (
   <div className="p-4 rounded-4" style={{ backgroundColor: '#f8fafc', border: '1px solid #edf2f7' }}>
     <div className="d-flex justify-content-between align-items-center">
       <div>

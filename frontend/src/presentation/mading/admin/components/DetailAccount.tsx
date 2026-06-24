@@ -3,34 +3,25 @@ import { Calendar, MessageSquare, Clock, User, ShieldCheck, BookOpen, Graduation
 import { Link, useParams } from 'react-router-dom';
 import type { FrontCommentEntity } from '../../../../core/entities/front-comment.entity';
 import { getStudentByIdUC } from '../../../../di/manage-student/student-container';
-import { frontGetDetailCommentUseCase } from '../../../../di/manage-comment/admin/comment-admin-container';
+import { frontGetAllCommentUseCase } from '../../../../di/manage-comment/comment-admin-container';
 import { useGetStudentById } from '../hooks/use-manage-student-hook/use-student.hook';
-import { useGetCommentById } from '../hooks/use-manage-comment-hook/use-comment.hooks';
+import { useGetAllComment } from '../hooks/use-manage-comment-hook/use-comment.hooks';
 
 export const DetailAccount: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const { executeGetStudentByIdHook, data: dataStudent } = useGetStudentById(getStudentByIdUC);
-  const { executeGetCommentByIdHook, data: dataComment } = useGetCommentById(frontGetDetailCommentUseCase);
+  const { executeGetAllCommentHook, data: dataComment } = useGetAllComment(frontGetAllCommentUseCase);
 
   useEffect(() => {
     if (id) {
       executeGetStudentByIdHook(id);
-      executeGetCommentByIdHook(id);
+      executeGetAllCommentHook();
     }
   }, [id]);
 
-  const comments = dataComment || [];
-  const latestComment = comments[0];
-
-  const userDetail = {
-    fullName: dataStudent?.fullName || 'Memuat...',
-    username: dataStudent?.username || '-',
-    role: dataStudent?.role || '-',
-    kelas: dataStudent?.kelas || '-',
-    jurusan: dataStudent?.jurusan || '-',
-    createdAt: dataStudent?.createdAt ? new Date(dataStudent.createdAt).toLocaleDateString('id-ID', { dateStyle: 'full' }) : '-',
-  };
+  const comments = dataComment?.filter((comment) => comment.userId === dataStudent?.id);
+  const userCommentLength = dataComment?.filter((comment) => comment.userId === dataStudent?.id).length;
 
   return (
     <div className="min-vh-100 pb-5" style={{ backgroundColor: '#f8f9fa' }}>
@@ -48,13 +39,13 @@ export const DetailAccount: React.FC = () => {
           <div style={{ height: '180px', background: 'linear-gradient(135deg, #006d32 0%, #00a859 100%)' }}></div>
           <div className="card-body p-4">
             <div className="d-flex flex-column flex-md-row align-items-end gap-4 mt-n5" style={{ marginTop: '-90px' }}>
-              <img src={`https://ui-avatars.com/api/?name=${userDetail.fullName}&background=fff&color=006d32&bold=true&size=200`} className="rounded-circle border border-5 border-white shadow" width="150" height="150" alt="profile" />
+              <img src={`https://ui-avatars.com/api/?name=${dataStudent?.fullName}&background=fff&color=006d32&bold=true&size=200`} className="rounded-circle border border-5 border-white shadow" width="150" height="150" alt="profile" />
               <div className="flex-grow-1 mb-2">
                 <div className="d-flex align-items-center gap-2">
-                  <h2 className="fw-bold mb-0 text-dark">{userDetail.fullName}</h2>
+                  <h2 className="fw-bold mb-0 text-dark">{dataStudent?.fullName}</h2>
                   <ShieldCheck className="text-primary" size={24} />
                 </div>
-                <p className="text-muted fs-5 mb-0">@{userDetail.username}</p>
+                <p className="text-muted fs-5 mb-0">@{dataStudent?.username}</p>
               </div>
               {/* <div className="d-flex gap-2 mb-2">
                 <button className="btn btn-success rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2">
@@ -73,10 +64,10 @@ export const DetailAccount: React.FC = () => {
                 <User size={20} className="text-success" /> Identitas Akun
               </h5>
               <div className="d-flex flex-column gap-3">
-                <InfoItem label="Kelas" value={userDetail.kelas} icon={<BookOpen size={18} />} />
-                <InfoItem label="Jurusan" value={userDetail.jurusan} icon={<GraduationCap size={18} />} />
-                <InfoItem label="Role Akses" value={userDetail.role} icon={<Hash size={18} />} />
-                <InfoItem label="Bergabung" value={userDetail.createdAt} icon={<Calendar size={18} />} />
+                <InfoItem label="Kelas" value={dataStudent?.kelas as string} icon={<BookOpen size={18} />} />
+                <InfoItem label="Jurusan" value={dataStudent?.jurusan as string} icon={<GraduationCap size={18} />} />
+                <InfoItem label="Role Akses" value={dataStudent?.role as string} icon={<Hash size={18} />} />
+                <InfoItem label="Bergabung" value={dataStudent?.createdAt as string} icon={<Calendar size={18} />} />
               </div>
             </div>
           </div>
@@ -90,7 +81,7 @@ export const DetailAccount: React.FC = () => {
                   <div className="bg-success-subtle text-success rounded-circle p-3 mx-auto mb-2" style={{ width: 'fit-content' }}>
                     <MessageSquare size={28} />
                   </div>
-                  <h3 className="fw-bold mb-0 text-dark">{comments.length}</h3>
+                  <h3 className="fw-bold mb-0 text-dark">{userCommentLength}</h3>
                   <p className="text-muted small mb-0">Total Komentar</p>
                 </div>
               </div>
@@ -104,11 +95,15 @@ export const DetailAccount: React.FC = () => {
                     </div>
                     <h6 className="fw-bold mb-0 text-dark">Aktivitas Terakhir</h6>
                   </div>
-                  {latestComment ? (
+                  {comments ? (
                     <div>
-                      <p className="text-muted small mb-1">Berkomentar di:</p>
-                      <p className="fw-bold text-dark mb-0 text-truncate">"{latestComment.judul}"</p>
-                      <small className="text-success fw-medium">{new Date(latestComment.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</small>
+                      {comments.map((e) => (
+                        <div>
+                          <p className="text-muted small mb-1">Berkomentar di:</p>
+                          <p className="fw-bold text-dark mb-0 text-truncate">"{e.judul}"</p>
+                          <small className="text-success fw-medium">{e.createdAt}</small>
+                        </div>
+                      ))}
                     </div>
                   ) : (
                     <p className="text-muted small mb-0">Belum ada aktivitas.</p>
@@ -125,7 +120,7 @@ export const DetailAccount: React.FC = () => {
               </div>
 
               <div className="timeline-container px-2">
-                {comments.length > 0 ? (
+                {comments?.length > 0 ? (
                   comments.map((comment, index) => <TimelineItem key={comment.id} comment={comment} isLast={index === comments.length - 1} />)
                 ) : (
                   <div className="text-center py-5">
@@ -172,7 +167,7 @@ const TimelineItem = ({ comment, isLast }: { comment: FrontCommentEntity; isLast
         "{comment.isiKomentar}"
       </p>
       <div className="d-flex align-items-center gap-2 text-muted" style={{ fontSize: '11px' }}>
-        <Clock size={12} /> {new Date(comment.createdAt).toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+        <Clock size={12} /> {comment.createdAt}
       </div>
     </div>
   </div>

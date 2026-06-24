@@ -1,19 +1,25 @@
-import { FileText, Layout, MessageCircle, ShieldCheck, Users } from 'lucide-react';
+import { FileText, MessageCircle, ShieldCheck, Users } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGetMading } from '../hooks/use-manage-mading-hook/use-mading.hooks';
 import { useGetStudent } from '../hooks/use-manage-student-hook/use-student.hook';
 import '../css/dashboard.style.css';
-import { getMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
+import { getAllMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
 import { getStudentsUC } from '../../../../di/manage-student/student-container';
 import { useAuth } from '../../../auth/hooks/use-auth.hook';
+import { useGetComment } from '../../clients/comment/hooks/use-user-comment/use-comment.hooks';
+import { frontGetAllCommentUseCase } from '../../../../di/manage-comment/comment-admin-container';
 
 export const Dashboard: React.FC = () => {
   const { verifyToken, isAuthenticated, user } = useAuth();
-  const { executeGetMadingHook, data: dataMading, loading: loadMading } = useGetMading(getMadingUC);
+  const { executeGetMadingHook, data: dataMading, loading: loadMading } = useGetMading(getAllMadingUC);
   const { executeStudentHook, data: dataSiswa } = useGetStudent(getStudentsUC);
-
+  const {executeGetCommentHook, data: dataComment} = useGetComment(frontGetAllCommentUseCase);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
   useEffect(() => {
     if (!isAuthenticated || user?.user?.role !== 'admin') {
@@ -22,16 +28,16 @@ export const Dashboard: React.FC = () => {
     }
 
     const fetchData = async () => {
-      await Promise.all([executeGetMadingHook(), executeStudentHook(), verifyToken()]);
+      await Promise.all([executeGetMadingHook(), executeStudentHook(), executeGetCommentHook()]);
     };
     fetchData();
-  }, [isAuthenticated, user?.user?.role, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleRefresh = () => {
     window.location.reload();
   };
 
-  if (!isAuthenticated || user?.user.role !== 'admin') return null;
+  if (!isAuthenticated || user?.user?.role !== 'admin') return null;
 
   if (loadMading) {
     return (
@@ -91,7 +97,7 @@ export const Dashboard: React.FC = () => {
           </div>
 
           <div className="row g-3">
-            <div className="col-12 col-sm-6 col-xl-3">
+            <div className="col-12 col-sm-6 col-xl-4">
               <div className="stat-card p-4 border border-light-subtle rounded-4 bg-light-subtle d-flex flex-column align-items-center text-center h-100">
                 <div className="icon-box mb-3 text-primary bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
                   <Users size={28} />
@@ -105,7 +111,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-xl-3">
+            <div className="col-12 col-sm-6 col-xl-4">
               <div className="stat-card p-4 border border-light-subtle rounded-4 bg-light-subtle d-flex flex-column align-items-center text-center h-100">
                 <div className="icon-box mb-3 text-success bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
                   <FileText size={28} />
@@ -119,7 +125,7 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-xl-3">
+            <div className="col-12 col-sm-6 col-xl-4">
               <div className="stat-card p-4 border border-light-subtle rounded-4 bg-light-subtle d-flex flex-column align-items-center text-center h-100">
                 <div className="icon-box mb-3 text-warning bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
                   <MessageCircle size={28} />
@@ -128,21 +134,7 @@ export const Dashboard: React.FC = () => {
                   Komentar
                 </div>
                 <div className="text-muted small">
-                  Total: <span className="text-warning fw-bold">0 Pesan</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-12 col-sm-6 col-xl-3">
-              <div className="stat-card p-4 border border-light-subtle rounded-4 bg-light-subtle d-flex flex-column align-items-center text-center h-100">
-                <div className="icon-box mb-3 text-info bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
-                  <Layout size={28} />
-                </div>
-                <div className="fw-bold text-dark mb-1" style={{ fontSize: '16px' }}>
-                  Kategori
-                </div>
-                <div className="text-muted small">
-                  Total: <span className="text-info fw-bold">0 Jenis</span>
+                  Total: <span className="text-warning fw-bold">{dataComment?.length} Pesan</span>
                 </div>
               </div>
             </div>

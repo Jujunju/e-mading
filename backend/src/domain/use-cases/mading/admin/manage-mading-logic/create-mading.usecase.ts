@@ -1,24 +1,18 @@
 import { UseCaseBase } from '../../../../base/use-case.base';
 import { MadingDTO } from '../../../../dtos/mading/mading.dtos';
-import { MadingRepository } from '../../../../repositories/mading/admins/manage-mading-contracts/mading.repository';
+import { MadingRepository } from '../../../../repositories/mading/admin/manage-mading-contracts/mading.repository';
 import { AppError } from '../../../../errors/app.error';
-import { MadingResponse } from '../../../../entities/mading.entity';
+import { MadingEntity } from '../../../../entities/mading.entity';
+import { MadingValidator } from '../../../../../interface-adapter/validator/admin/mading/mading.validator';
+import { randomId } from '../../../../../infrastructure/helpers/set-time-id';
 
-export class CreateMadingUseCase implements UseCaseBase<MadingDTO, MadingResponse> {
+export class CreateMadingUseCase implements UseCaseBase<MadingDTO, void> {
   constructor(private madingRepository: MadingRepository) {}
-  async execute(input: MadingDTO): Promise<MadingResponse> {
-    try {
-      const response = await this.madingRepository.create(input);
-      if (!response) {
-        throw new AppError('Gagal Menyimpan Data Mading', 400);
-      }
 
-      return new MadingResponse(response.id, response.judul, response.slug, response.isi, response.kategori, response.gambar);
-    } catch (error) {
-      if (error instanceof AppError) {
-        throw error;
-      }
-      throw new AppError('Terjadi kesalahan saat mengambil data mading', 500);
-    }
+  async execute(input: MadingDTO): Promise<void> {
+    MadingValidator.handleMadingValidator(input);
+
+    const newMading = new MadingEntity(randomId(), input.judul, input.judul, input.kategori, input.isi, input.gambar);
+    await this.madingRepository.create(newMading);
   }
 }

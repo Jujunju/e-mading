@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDeleteAllMading, useGetMading, useDeleteMadingById } from '../hooks/use-manage-mading-hook/use-mading.hooks';
 import '../css/kelola-mading.style.css';
-import { deleteAllMadingUC, deleteMadingByIdUC, getMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
+import { bulkDeleteMadingByIdsUC, deleteMadingByIdUC, getAllMadingUC } from '../../../../di/manage-mading/admin/admin-mading-container';
 import Swal from 'sweetalert2';
 
 const kategoriColors: Record<string, string> = {
@@ -16,8 +16,8 @@ const kategoriColors: Record<string, string> = {
 };
 
 export const KelolaMading: React.FC = () => {
-  const { executeGetMadingHook, data, loading: loadMading } = useGetMading(getMadingUC);
-  const { executeDeleteAllMadingHook} = useDeleteAllMading(deleteAllMadingUC);
+  const { executeGetMadingHook, data, loading: loadMading } = useGetMading(getAllMadingUC);
+  const { executeDeleteAllMadingHook } = useDeleteAllMading(bulkDeleteMadingByIdsUC);
   const { executeDeleteMadingByIdHook } = useDeleteMadingById(deleteMadingByIdUC);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,8 +69,6 @@ export const KelolaMading: React.FC = () => {
       confirmButtonText: 'Ya, Hapus Semua',
       cancelButtonText: 'Batal',
     });
-
-    console.log(selectedIds)
 
     if (result.isConfirmed) {
       const res = await executeDeleteAllMadingHook(selectedIds);
@@ -220,7 +218,7 @@ export const KelolaMading: React.FC = () => {
                       <span className="mobile-label d-lg-none">TGL PUBLIKASI</span>
                       <div className="d-flex align-items-center justify-content-lg-center gap-2 text-muted small">
                         <Calendar size={13} />
-                        {new Date(d.createdAt).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        {d.createdAt}
                       </div>
                     </td>
 

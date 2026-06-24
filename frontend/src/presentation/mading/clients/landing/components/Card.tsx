@@ -3,10 +3,10 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetMading } from '../../../admin/hooks/use-manage-mading-hook/use-mading.hooks';
 import '../css/card.style.css';
-import { getMadingUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
+import { getAllMadingUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
 
 export const Card: React.FC = () => {
-  const { executeGetMadingHook, data: dataMading, loading } = useGetMading(getMadingUC);
+  const { executeGetMadingHook, data: dataMading, loading } = useGetMading(getAllMadingUC);
 
   useEffect(() => {
     executeGetMadingHook();

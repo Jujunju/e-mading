@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs"
-import { AuthService } from "../../domain/services/auth.service"
+import { PasswordSecurity } from '../../domain/security/password.security';
 
-export class AuthBcrypt implements AuthService {
+export class AuthBcrypt implements PasswordSecurity {
     private saltRounds: number = 10;
     async hash(password: string): Promise<string> {
         return await bcrypt.hash(password, this.saltRounds)

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import type { FrontGetStudentUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-student.usecase';
+import type { FrontGetAllStudentUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-get-all-student.usecase';
 import type { FrontGetStudentByIdUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-get-student-by-id.usecase';
-import type { FrontDeleteStudentUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-delete-student.usecase';
+import type { FrontDeleteStudentByIdUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-delete-student-by-id.usecase';
 import type { FrontUserEntity } from '../../../../../core/entities/front-user.entity';
-import type { FrontDeleteAllStudentUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-delete-all-student.usecase';
+import type { FrontBulkDeleteStudentByIdsUseCase } from '../../../../../core/usecases/mading/admin/front-manage-student/front-bulk-delete-student-by-ids.usecase';
 import Swal from 'sweetalert2';
 
-export const useGetStudent = (frontGetStudentUseCase: FrontGetStudentUseCase) => {
+export const useGetStudent = (frontGetAllStudentUseCase: FrontGetAllStudentUseCase) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export const useGetStudent = (frontGetStudentUseCase: FrontGetStudentUseCase) =>
   const executeStudentHook = async () => {
     try {
       setLoading(true);
-      const response = await frontGetStudentUseCase.execute();
+      const response = await frontGetAllStudentUseCase.execute();
       setSuccess(true);
       setData(response);
       return response;
@@ -54,14 +54,14 @@ export const useGetStudentById = (frontGetStudentByIdUseCase: FrontGetStudentByI
   return { executeGetStudentByIdHook, loading, error, success, data };
 };
 
-export const useDeleteStudent = (frontDeleteStudentUseCase: FrontDeleteStudentUseCase) => {
+export const useDeleteStudent = (frontDeleteStudentByIdUseCase: FrontDeleteStudentByIdUseCase) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const executeDeleteStudentHook = async (id: string) => {
     try {
       setLoading(true);
-      const response = await frontDeleteStudentUseCase.execute(id);
+      const response = await frontDeleteStudentByIdUseCase.execute(id);
       setSuccess(true);
 
       Swal.fire({
@@ -82,14 +82,14 @@ export const useDeleteStudent = (frontDeleteStudentUseCase: FrontDeleteStudentUs
   return { executeDeleteStudentHook, loading, error, success };
 };
 
-export const useDeleteAllStudent = (frontDeleteAllStudentUseCase: FrontDeleteAllStudentUseCase) => {
+export const useDeleteAllStudent = (frontBulkDeleteStudentByIdsUseCase: FrontBulkDeleteStudentByIdsUseCase) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const executeDeleteAllStudentHook = async (ids: string[]) => {
     try {
       setLoading(true);
-      const response = await frontDeleteAllStudentUseCase.execute(ids);
+      const response = await frontBulkDeleteStudentByIdsUseCase.execute(ids);
       setSuccess(true);
 
       Swal.fire({

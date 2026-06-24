@@ -3,75 +3,76 @@ import 'dotenv/config';
 
 import { connectDB } from './infrastructure/databases/mongodb/config/db-mongodb.config';
 import { startServer } from './infrastructure/webserver/server';
-import { RegisterUseCase } from './domain/use-cases/auth/manage-auth-logic/register.usecase';
-import { AuthMongodbRepository } from './infrastructure/databases/mongodb/repositories/auth/manage-auth-impl-repository/auth-mongodb.repository';
+import { CreateUserUseCase } from './domain/use-cases/user/manage-user-logic/create-user.usecase';
+import { UserMongodbRepository } from './infrastructure/databases/mongodb/repositories/user/manage-user-impl-repository/user-mongodb.repository';
 import { AuthBcrypt } from './infrastructure/security/bcrypt.security';
-import { AuthController } from './interface-adapters/controllers/auth/auth.controller';
+import { AuthController } from './interface-adapter/controllers/auth/auth.controller';
 import { LoginUseCase } from './domain/use-cases/auth/manage-auth-logic/login.usecase';
 import { ITokenJwt } from './infrastructure/security/jwt.security';
 import { CreateMadingUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/create-mading.usecase';
-import { GetMadingUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/get-mading.usecase';
-import { MadingMongodbRepository } from './infrastructure/databases/mongodb/repositories/admin/manage-mading-impl-repository/mading-mongodb.repository';
-import { MadingController } from './interface-adapters/controllers/mading/admin/manage-mading-controller/mading.controller';
+import { GetAllMadingUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/get-all-mading.usecase';
+import { MadingMongodbRepository } from './infrastructure/databases/mongodb/repositories/mading/admin/manage-mading-impl-repository/mading-mongodb.repository';
+import { MadingController } from './interface-adapter/controllers/mading/admin/manage-mading-controller/mading.controller';
 import { DeleteMadingByIdUsecase } from './domain/use-cases/mading/admin/manage-mading-logic/delete-mading-by-id.usecase';
-import { StudentController } from './interface-adapters/controllers/mading/admin/manage-student-controller/student.controller';
-import { GetStudentUseCase } from './domain/use-cases/mading/admin/manage-students-logic/get-student.usecase';
-import { StudentMongodbRepository } from './infrastructure/databases/mongodb/repositories/admin/manage-students-impl-repository/student-mongodb.repository';
-import { DeleteStudentUseCase } from './domain/use-cases/mading/admin/manage-students-logic/delete-student.usecase';
-import { ClientCommentController } from './interface-adapters/controllers/mading/client/user-comment-controller/comment.controller';
-import { CreateCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/create-user-comment.usecase';
-import { CommentMongodbRepository } from './infrastructure/databases/mongodb/repositories/admin/manage-comment-impl-repository/comment-mongodb.repository';
-import { GetCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/get-user-comment.usecase';
-import { DeleteCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/delete-user-comment.usecase';
+import { StudentController } from './interface-adapter/controllers/mading/admin/manage-student-controller/student.controller';
+import { GetAllStudentUseCase } from './domain/use-cases/mading/admin/manage-students-logic/get-all-student.usecase';
+import { StudentMongodbRepository } from './infrastructure/databases/mongodb/repositories/mading/admin/manage-students-impl-repository/student-mongodb.repository';
+import { DeleteStudentByIdUseCase } from './domain/use-cases/mading/admin/manage-students-logic/delete-student-by-id.usecase';
+import { ClientCommentController } from './interface-adapter/controllers/mading/client/user-comment-controller/u-comment.controller';
+import { CreateCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/create-comment-user.usecase';
+import { GetAllCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/get-all-comment-user.usecase';
+import { DeleteCommentByIdUseCase } from './domain/use-cases/mading/client/user-comment-logic/delete-comment-user-by-id.usecase';
 import { GetMadingByIdUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/get-mading-by-id.usecase';
 import { UpdateMadingByIdUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/update-mading-by-id.usecase';
-import { DeleteAllMadingUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/delete-all-mading.usecase';
-import { DeleteAllStudentUseCase } from './domain/use-cases/mading/admin/manage-students-logic/delete-all-student.usecase';
+import { BulkDeleteMadingByIdUseCase } from './domain/use-cases/mading/admin/manage-mading-logic/bulk-delete-mading-by-id.usecase';
+import { DeleteAllStudentUseCase } from './domain/use-cases/mading/admin/manage-students-logic/bulk-delete-student-by-id.usecase';
 import { GetStudentByIdUseCase } from './domain/use-cases/mading/admin/manage-students-logic/get-student-by-id.usecase';
-import { AdminCommentController } from './interface-adapters/controllers/mading/admin/manage-comment-controller/comment.controller';
-import { GetCommentByIdUseCase } from './domain/use-cases/mading/admin/manage-comment-logic/get-comment-by-id.usecase';
-import { EditCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/edit-user-comment.usecase';
-import { UserCommentMongodbRepository } from './infrastructure/databases/mongodb/repositories/client/user-comment-impl-repository/u-comment-mongodb.repository';
+import { UpdateCommentUseCase } from './domain/use-cases/mading/client/user-comment-logic/update-user-comment.usecase';
+import { UserCommentMongodbRepository } from './infrastructure/databases/mongodb/repositories/mading/client/user-comment-impl-repository/u-comment-mongodb.repository';
 import { GetMadingBySlugUseCase } from './domain/use-cases/mading/client/user-mading-logic/get-mading-by-slug.usecase';
-import { UserMadingMongodbRepository } from './infrastructure/databases/mongodb/repositories/client/user-mading-impl-repository/u-mading-mongodb.repository';
-import { UserMadingController } from './interface-adapters/controllers/mading/client/user-mading-controller/mading.controller';
+import { UserMadingMongodbRepository } from './infrastructure/databases/mongodb/repositories/mading/client/user-mading-impl-repository/u-mading-mongodb.repository';
+import { UserMadingController } from './interface-adapter/controllers/mading/client/user-mading-controller/u-mading.controller';
 import { AuthRoute } from './infrastructure/webserver/routes/auth/auth.routes';
 import { AuthMiddleware } from './infrastructure/middleware/auth/auth.middleware';
-import { MadingRoute } from './infrastructure/webserver/routes/admin/manage-mading-route/manage-mading.routes';
-import { StudentsRoute } from './infrastructure/webserver/routes/admin/manage-student-route/manage-student.routes';
-import { CommentClientRoute } from './infrastructure/webserver/routes/client/user-comment-route/u-comment.routes';
-import { ManageAdminComment } from './infrastructure/webserver/routes/admin/manage-comment-route/manage-comment.routes';
-import { MadingClientRoute } from './infrastructure/webserver/routes/client/user-mading-route/u-mading.routes';
+import { MadingRoute } from './infrastructure/webserver/routes/mading/admin/manage-mading-route/manage-mading.routes';
+import { StudentsRoute } from './infrastructure/webserver/routes/mading/admin/manage-student-route/manage-student.routes';
+import { CommentClientRoute } from './infrastructure/webserver/routes/mading/client/user-comment-route/u-comment.routes';
+import { MadingClientRoute } from './infrastructure/webserver/routes/mading/client/user-mading-route/u-mading.routes';
+import { UserController } from './interface-adapter/controllers/user/user.controller';
+import { UserRoute } from './infrastructure/webserver/routes/user/user';
 
 const bootstrap = async () => {
   try {
 
-    // Database
+    // DB
     await connectDB();
 
     // Security
-    const iUserRepositories: AuthMongodbRepository = new AuthMongodbRepository();
     const authBcrypt: AuthBcrypt = new AuthBcrypt();
     const iTokenJwt: ITokenJwt = new ITokenJwt();
     const authMiddleware = new AuthMiddleware(iTokenJwt);
-
+    
     // Auth
-    const registerUseCase: RegisterUseCase = new RegisterUseCase(iUserRepositories, authBcrypt);
+    const iUserRepositories: UserMongodbRepository = new UserMongodbRepository();
     const loginUseCase: LoginUseCase = new LoginUseCase(iUserRepositories, authBcrypt, iTokenJwt);
-    const authController: AuthController = new AuthController(registerUseCase, loginUseCase);
+    const authController: AuthController = new AuthController(loginUseCase);
     const authRoute = new AuthRoute(authController, authMiddleware);
+
+    // User
+    const createUserUseCase: CreateUserUseCase = new CreateUserUseCase(iUserRepositories, authBcrypt);
+    const userController: UserController = new UserController(createUserUseCase)
+    const userRoute = new UserRoute(userController)
 
     // Mading Admin
     const madingMongodbRepository: MadingMongodbRepository = new MadingMongodbRepository();
     const createMadingUseCase: CreateMadingUseCase = new CreateMadingUseCase(madingMongodbRepository);
-
-    const getMadingUseCase: GetMadingUseCase = new GetMadingUseCase(madingMongodbRepository);
+    const getMadingUseCase: GetAllMadingUseCase = new GetAllMadingUseCase(madingMongodbRepository);
     const getMadingByIdUseCase: GetMadingByIdUseCase = new GetMadingByIdUseCase(madingMongodbRepository);
     const updateMadingByIdUseCase: UpdateMadingByIdUseCase = new UpdateMadingByIdUseCase(madingMongodbRepository);
     const deleteMadingByIdUseCase: DeleteMadingByIdUsecase = new DeleteMadingByIdUsecase(madingMongodbRepository);
-    const deleteAllMadingUseCase: DeleteAllMadingUseCase = new DeleteAllMadingUseCase(madingMongodbRepository);
+    const deleteAllMadingUseCase: BulkDeleteMadingByIdUseCase = new BulkDeleteMadingByIdUseCase(madingMongodbRepository);
     const madingController: MadingController = new MadingController(createMadingUseCase, getMadingByIdUseCase, getMadingUseCase, updateMadingByIdUseCase, deleteMadingByIdUseCase, deleteAllMadingUseCase);
-    const madingRoute = new MadingRoute(madingController, authMiddleware);
+    const madingAdminRoute = new MadingRoute(madingController, authMiddleware);
 
     // Mading Client
     const userMadingMongodbRepository: UserMadingMongodbRepository = new UserMadingMongodbRepository();
@@ -79,45 +80,40 @@ const bootstrap = async () => {
     const userMadingController: UserMadingController = new UserMadingController(getMadingBySlugUseCase);
     const madingClientRoute = new MadingClientRoute(userMadingController);
 
-    // Siswa
+    // Student
     const studentMongodbRepository: StudentMongodbRepository = new StudentMongodbRepository();
-    const frontStudentUseCase: GetStudentUseCase = new GetStudentUseCase(studentMongodbRepository);
+    const frontStudentUseCase: GetAllStudentUseCase = new GetAllStudentUseCase(studentMongodbRepository);
     const frontStudentByIdUseCase: GetStudentByIdUseCase = new GetStudentByIdUseCase(studentMongodbRepository);
-    const deleteStudentUseCase: DeleteStudentUseCase = new DeleteStudentUseCase(studentMongodbRepository);
+    const deleteStudentUseCase: DeleteStudentByIdUseCase = new DeleteStudentByIdUseCase(studentMongodbRepository);
     const deleteAllStudentUseCase: DeleteAllStudentUseCase = new DeleteAllStudentUseCase(studentMongodbRepository);
     const studentController: StudentController = new StudentController(frontStudentUseCase, frontStudentByIdUseCase, deleteStudentUseCase, deleteAllStudentUseCase);
     const studentRoute = new StudentsRoute(studentController, authMiddleware);
 
-    // comment client
-    const ClientCommentRepository: UserCommentMongodbRepository = new UserCommentMongodbRepository();
-    const createCommentUseCase: CreateCommentUseCase = new CreateCommentUseCase(ClientCommentRepository);
-    const getCommentUseCase: GetCommentUseCase = new GetCommentUseCase(ClientCommentRepository);
-    const editCommentUseCase: EditCommentUseCase = new EditCommentUseCase(ClientCommentRepository);
-    const deleteCommentUseCase: DeleteCommentUseCase = new DeleteCommentUseCase(ClientCommentRepository);
+    // Comment
+    const commentRepository: UserCommentMongodbRepository = new UserCommentMongodbRepository();
+    const createCommentUseCase: CreateCommentUseCase = new CreateCommentUseCase(commentRepository);
+    const getCommentUseCase: GetAllCommentUseCase = new GetAllCommentUseCase(commentRepository);
+    const editCommentUseCase: UpdateCommentUseCase = new UpdateCommentUseCase(commentRepository);
+    const deleteCommentUseCase: DeleteCommentByIdUseCase = new DeleteCommentByIdUseCase(commentRepository);
     const commentController: ClientCommentController = new ClientCommentController(createCommentUseCase, getCommentUseCase, editCommentUseCase, deleteCommentUseCase);
     const commentRoute = new CommentClientRoute(commentController, authMiddleware);
 
-    // comment admin
-    const adminCommentRepository: CommentMongodbRepository = new CommentMongodbRepository();
-    const adminGetCommentByIdUseCase: GetCommentByIdUseCase = new GetCommentByIdUseCase(adminCommentRepository);
-    const adminCommentController: AdminCommentController = new AdminCommentController(adminGetCommentByIdUseCase);
-    const adminCommentRoute = new ManageAdminComment(adminCommentController, authMiddleware);
 
     const router = express.Router();
 
     router.use('/api', authRoute.getRoutes());
 
-    router.use('/api', madingRoute.getRoutes());
+    router.use('/api', userRoute.getRoutes());
 
     router.use('/api', studentRoute.getRoutes());
-
+    
     router.use('/api', commentRoute.getRoutes());
-
-    router.use('/api', adminCommentRoute.getRoutes());
+    
+    router.use('/api', madingAdminRoute.getRoutes());
 
     router.use('/api', madingClientRoute.getRoutes());
 
-    startServer(process.env.PORT!, [router]);
+    startServer(process.env.PORT as string, [router]);
   } catch (error) {
     console.log(`Terjadi error ${error}`);
   }

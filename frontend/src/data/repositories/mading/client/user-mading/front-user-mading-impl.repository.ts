@@ -1,6 +1,5 @@
-
 import type { FrontMadingEntity } from '../../../../../core/entities/front-mading.entity';
-import type { ClientFrontUserMadingRepository } from '../../../../../core/repositories/client/client-front-user-mading-contracts/front-user-mading.repository';
+import type { ClientFrontUserMadingRepository } from '../../../../../core/repositories/mading/client/client-front-user-mading-contracts/front-user-mading.repository';
 import { handleApiError } from '../../../../errors/error-handler';
 import { axiosInstance } from '../../../../sources/axios-instance';
 

@@ -2,7 +2,7 @@ export interface FrontMadingDTO {
   judul?: string;
   kategori?: string;
   isi?: string;
-  gambar?: File | null | string;
+  gambar?: null | string;
 }
 
 export interface FrontMadingResponseDTO {

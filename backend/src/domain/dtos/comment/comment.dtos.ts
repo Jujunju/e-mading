@@ -7,3 +7,10 @@ export class CommentDTO implements Pick<CommentEntity, 'userId' | 'madingId' | '
     public readonly isiKomentar: string,
   ) {}
 }
+
+export class UpdateCommentInput {
+  constructor(
+    public id: string,
+    public dto: CommentDTO,
+  ) {}
+}

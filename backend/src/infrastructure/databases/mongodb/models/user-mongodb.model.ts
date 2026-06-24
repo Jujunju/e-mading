@@ -1,7 +1,18 @@
-import mongoose, { InferSchemaType } from 'mongoose';
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      unique: true,
+      immutable: true,
+      index: true,
+    },
+    fullName: {
+      type: String,
+      required: true,
+      minLength: 3,
+    },
     username: {
       type: String,
       required: true,
@@ -13,11 +24,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       minLength: 3,
     },
-    fullName: {
-      type: String,
-      required: true,
-      minLength: 3,
-    },
     role: {
       type: String,
       enum: ['admin', 'siswa'],
@@ -25,20 +31,17 @@ const userSchema = new mongoose.Schema(
     },
     kelas: {
       type: String,
-      enum: ['X', 'XI', 'XII'],
-      default: null,
+      enum: ['X', 'XI', 'XII', undefined],
     },
     jurusan: {
       type: String,
-      enum: ['DKV', 'PPLG', 'MPLB', 'TJKT'],
-      default: null,
+      enum: ['DKV', 'PPLG', 'MPLB', 'TJKT', undefined],
     },
   },
   {
     timestamps: true,
+    _id: true,
   },
 );
-
-export type UserDoc = InferSchemaType<typeof userSchema>;
 
 export const UserModel = mongoose.model('user', userSchema);

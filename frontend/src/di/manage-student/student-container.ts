@@ -1,11 +1,11 @@
-import { FrontDeleteAllStudentUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-delete-all-student.usecase';
-import { FrontDeleteStudentUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-delete-student.usecase';
+import { FrontBulkDeleteStudentByIdsUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-bulk-delete-student-by-ids.usecase';
+import { FrontDeleteStudentByIdUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-delete-student-by-id.usecase';
 import { FrontGetStudentByIdUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-get-student-by-id.usecase';
-import { FrontGetStudentUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-student.usecase';
+import { FrontGetAllStudentUseCase } from '../../core/usecases/mading/admin/front-manage-student/front-get-all-student.usecase';
 import { FrontStudentImplRepository } from '../../data/repositories/mading/admin/front-manage-student-impl-repository/front-student-impl.repository';
 
 const studentRepoImpl = new FrontStudentImplRepository();
-export const getStudentsUC = new FrontGetStudentUseCase(studentRepoImpl);
+export const getStudentsUC = new FrontGetAllStudentUseCase(studentRepoImpl);
 export const getStudentByIdUC = new FrontGetStudentByIdUseCase(studentRepoImpl);
-export const deleteStudentUC = new FrontDeleteStudentUseCase(studentRepoImpl);
-export const deleteAllStudentUC = new FrontDeleteAllStudentUseCase(studentRepoImpl);
+export const deleteStudentUC = new FrontDeleteStudentByIdUseCase(studentRepoImpl);
+export const deleteAllStudentUC = new FrontBulkDeleteStudentByIdsUseCase(studentRepoImpl);

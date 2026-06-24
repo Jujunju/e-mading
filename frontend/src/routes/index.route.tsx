@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { RegisterForm } from '../presentation/auth/components/RegisterForm';
-import { LoginForm } from '../presentation/auth/components/LoginForm';
+import { RegisterForm } from '../presentation/auth/pages/RegisterForm';
+import { LoginForm } from '../presentation/auth/pages/LoginForm';
 import { MyDashboard } from '../presentation/mading/admin/pages/MainDashboard';
 import { HomePage } from '../presentation/mading/clients/landing/pages/Homepage';
 import { DetailMading } from '../presentation/mading/clients/comment/components/DetailMading';

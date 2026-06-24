@@ -1,4 +1,4 @@
-import type { ClientFrontUserMadingRepository } from '../../../../repositories/client/client-front-user-mading-contracts/front-user-mading.repository';
+import type { ClientFrontUserMadingRepository } from '../../../../repositories/mading/client/client-front-user-mading-contracts/front-user-mading.repository';
 
 export class FrontGetMadingBySlugUseCase {
   clientFrontUserMadingRepository: ClientFrontUserMadingRepository;

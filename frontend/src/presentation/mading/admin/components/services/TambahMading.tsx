@@ -1,9 +1,9 @@
 import { AlertCircle, AlignLeft, ImagePlus, Send, Tag, Type, X } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCreateMading } from '../../hooks/use-manage-mading-hook/use-mading.hooks';
 import Swal from 'sweetalert2';
-import '../../css/tambah-mading.style.css'
+import '../../css/tambah-mading.style.css';
 import { createMadingUC } from '../../../../../di/manage-mading/admin/admin-mading-container';
 
 export const TambahMading: React.FC = () => {
@@ -31,9 +31,14 @@ export const TambahMading: React.FC = () => {
         Swal.fire('File Terlalu Besar', 'Maksimal ukuran gambar adalah 2MB', 'warning');
         return;
       }
-      if (preview) URL.revokeObjectURL(preview);
+      if(preview) {
+        URL.revokeObjectURL(preview)
+      }
+
       setPreview(URL.createObjectURL(file));
       setFormData((prev) => ({ ...prev, gambar: file }));
+
+      e.target.value = ''
     }
   };
 
@@ -44,10 +49,6 @@ export const TambahMading: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.gambar) {
-      Swal.fire('Gambar Kosong', 'Silakan unggah poster mading terlebih dahulu', 'error');
-      return;
-    }
 
     const dataPayload = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
@@ -55,14 +56,6 @@ export const TambahMading: React.FC = () => {
     });
 
     executeCreateMadingHook(dataPayload);
-
-    setFormData({
-      judul: '',
-      kategori: '',
-      isi: '',
-      gambar: null,
-    });
-    setPreview(null)
   };
 
   return (
@@ -95,7 +88,7 @@ export const TambahMading: React.FC = () => {
                     <span className="input-group-text bg-light border-0">
                       <Type size={18} />
                     </span>
-                    <input name="judul" value={formData.judul} onChange={handleChange} type="text" className="form-control bg-light border-0 py-2-5" placeholder="Contoh: Juara 1 Lomba LKS Nasional..." required />
+                    <input name="judul" value={formData.judul} onChange={handleChange} type="text" className="form-control bg-light border-0 py-2-5" placeholder="Contoh: Juara 1 Lomba LKS Nasional..." />
                   </div>
                 </div>
 
@@ -107,7 +100,7 @@ export const TambahMading: React.FC = () => {
                     <span className="input-group-text bg-light border-0">
                       <Tag size={18} />
                     </span>
-                    <select name="kategori" value={formData.kategori} onChange={handleChange} className="form-select bg-light border-0 py-2-5" required>
+                    <select name="kategori" value={formData.kategori} onChange={handleChange} className="form-select bg-light border-0 py-2-5">
                       <option value="" disabled>
                         Pilih kategori...
                       </option>
@@ -138,7 +131,7 @@ export const TambahMading: React.FC = () => {
                       rows={10}
                       placeholder="Tuliskan detail informasi di sini secara lengkap..."
                       style={{ resize: 'none' }}
-                      required
+                    
                     ></textarea>
                   </div>
                 </div>
@@ -156,10 +149,10 @@ export const TambahMading: React.FC = () => {
                 <div className="upload-zone position-relative rounded-4 overflow-hidden mb-3">
                   {preview ? (
                     <div className="preview-container position-relative">
+                      <button className="position-absolute bg-danger border-0 rounded-circle p-1 m-1 end-0 z-3" onClick={() => setPreview(null)} style={{cursor: 'pointer'}}>
+                        <X size={30} className='text-white' />
+                      </button>
                       <img src={preview} className="w-100 object-fit-cover shadow-sm" style={{ height: '350px' }} alt="Preview" />
-                      <div className="overlay-change d-flex align-items-center justify-content-center">
-                        <span className="text-white fw-bold bg-dark bg-opacity-50 px-3 py-2 rounded-pill">Ganti Gambar</span>
-                      </div>
                     </div>
                   ) : (
                     <div className="empty-upload text-center py-5 bg-light border-2 border-dashed rounded-4">
@@ -170,7 +163,7 @@ export const TambahMading: React.FC = () => {
                       <p className="text-muted small">Format: JPG, PNG, WEBP (Maks 2MB)</p>
                     </div>
                   )}
-                  <input type="file" onChange={handleFileChange} className="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer" accept="image/*" />
+                  <input type="file" onChange={handleFileChange} className="position-absolute top-0 start-0 z-1 w-100 h-100 opacity-0 cursor-pointer" accept="image/*" />
                 </div>
 
                 <div className="alert border-0 bg-success-subtle rounded-3 d-flex gap-3 mb-0">

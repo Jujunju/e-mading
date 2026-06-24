@@ -2,10 +2,10 @@ export interface FrontCommentEntity {
   id: string;
   userId: string;
   madingId: string;
-  fullName: string | null | undefined;
-  judul: string | null | undefined;
-  role: string | null | undefined;
-  isiKomentar: string | null | undefined;
+  fullName: string ;
+  judul: string ;
+  role: string ;
+  isiKomentar: string ;
   createdAt: string;
   updatedAt: string;
 }

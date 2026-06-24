@@ -15,10 +15,10 @@ export const Footer: React.FC = () => {
             <p className="text-muted px-md-5">Platform Mading Digital. Solusi inovatif untuk mempermudah penyediaan informasi dan berita sekolah.</p>
 
             <div className="d-flex gap-4 justify-content-center mt-4">
-              <a href="https://www.instagram.com/smktekmuhcianjur/" style={{ color: '#0f172a' }} className="transition-opacity opacity-75 hover-opacity-100">
+              <a href="https://www.instagram.com/sayjunz_/" style={{ color: '#0f172a' }} className="transition-opacity opacity-75 hover-opacity-100">
                 <Instagram size={24} />
               </a>
-              <a href="http://www.youtube.com/@smkteknikmuhammadiyahplusc5370" style={{ color: '#0f172a' }} className="transition-opacity opacity-75 hover-opacity-100">
+              <a href="https://www.youtube.com/@jnjunaedi" style={{ color: '#0f172a' }} className="transition-opacity opacity-75 hover-opacity-100">
                 <Youtube size={25} />
               </a>
             </div>

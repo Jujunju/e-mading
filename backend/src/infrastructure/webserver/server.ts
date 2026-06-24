@@ -1,7 +1,8 @@
-import express, { Router } from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 import cors from 'cors';
 import { join, resolve } from 'path';
 import cookieParser from 'cookie-parser';
+import { sendResponse } from '../utils/status-response.util';
 
 const serverExpress = express();
 serverExpress.use(
@@ -16,6 +17,17 @@ serverExpress.use(express.json());
 serverExpress.use(cookieParser());
 serverExpress.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 serverExpress.use(express.urlencoded({ extended: true }));
+serverExpress.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode: number = err.statusCode || 500;
+  const msg = err.message;
+
+  const sendRes = {
+    statusCode,
+    body: msg,
+  };
+
+  sendResponse(res, sendRes);
+});
 
 export const startServer = (port: number | string, routes: Router[]) => {
   routes.forEach((route) => {

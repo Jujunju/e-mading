@@ -6,7 +6,7 @@ export class CheckAuthClientUseCase {
     this.frontAuthRepository = frontAuthRepository;
   }
 
-  async execute(signal?: AbortSignal) {
+  async execute() {
     return await this.frontAuthRepository.checkAuthUser();
   }
 }

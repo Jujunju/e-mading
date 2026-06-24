@@ -38,6 +38,7 @@ export const Navbar: React.FC = () => {
     }
   };
 
+
   return (
     <nav
       className="navbar navbar-expand-lg position-fixed start-0 end-0 top-0 py-3"
@@ -64,50 +65,25 @@ export const Navbar: React.FC = () => {
         </Link>
 
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav" style={{ marginLeft: '-30px' }}>
-          {location.pathname === `/e-mading/my-profile/${user?.user?.id}` || location.pathname !== `/e-mading/detail-mading/` ? (
-            <ul className="navbar-nav gap-lg-4 py-3 py-lg-0"></ul>
-          ) : (
-            <ul className="navbar-nav gap-lg-4 py-3 py-lg-0">
+          <ul className="navbar-nav gap-lg-4 py-3 py-lg-0">
+            <li className="nav-item">
+              <a href="#" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark `}>
+                <Home size={18} /> Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a href="#berita-terbaru" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark`}>
+                <Newspaper size={18} /> Portal Berita
+              </a>
+            </li>
+            {user?.user?.role === 'admin' && (
               <li className="nav-item">
-                <a href="#" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark `}>
-                  <Home size={18} /> Home
-                </a>
+                <Link to="/admin/dashboard" className="nav-link fw-bold text-dark d-flex align-items-center gap-2">
+                  <Layout size={18} /> Dashboard
+                </Link>
               </li>
-              <li className="nav-item">
-                <a href="#berita-terbaru" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark`}>
-                  <Newspaper size={18} /> Portal Berita
-                </a>
-              </li>
-              {user?.user?.role === 'admin' && (
-                <li className="nav-item">
-                  <Link to="/admin/dashboard" className="nav-link fw-bold text-dark d-flex align-items-center gap-2">
-                    <Layout size={18} /> Dashboard
-                  </Link>
-                </li>
-              )}
-            </ul>
-          )}
-          {location.pathname === `/e-mading` && (
-            <ul className="navbar-nav gap-lg-4 py-3 py-lg-0">
-              <li className="nav-item">
-                <a href="#" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark `}>
-                  <Home size={18} /> Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#berita-terbaru" className={`nav-link fw-bold d-flex align-items-center gap-2 text-dark`}>
-                  <Newspaper size={18} /> Portal Berita
-                </a>
-              </li>
-              {user?.user?.role === 'admin' && (
-                <li className="nav-item">
-                  <Link to="/admin/dashboard" className="nav-link fw-bold text-dark d-flex align-items-center gap-2">
-                    <Layout size={18} /> Dashboard
-                  </Link>
-                </li>
-              )}
-            </ul>
-          )}
+            )}
+          </ul>
         </div>
 
         <div className="d-flex align-items-center gap-3">

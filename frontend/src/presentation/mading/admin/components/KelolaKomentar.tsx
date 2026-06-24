@@ -1,12 +1,13 @@
 import { Calendar, FileText, Trash2, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDeleteComment, useGetComment } from '../hooks/use-manage-comment-hook/use-comment.hooks';
+import { useDeleteComment } from '../hooks/use-manage-comment-hook/use-comment.hooks';
+import { useGetComment } from '../../clients/comment/hooks/use-user-comment/use-comment.hooks';
 import Swal from 'sweetalert2';
 import '../css/kelola-komentar.style.css';
-import { deleteCommentByIdUC, getCommentsUC } from '../../../../di/manage-comment/client/comment-client-container';
+import { deleteCommentByIdUC, frontGetAllCommentUseCase } from '../../../../di/manage-comment/comment-admin-container';
 
 export const KelolaKomentar: React.FC = () => {
-  const { executeGetCommentHook, data: dataComment, loading } = useGetComment(getCommentsUC);
+  const { executeGetCommentHook, data: dataComment, loading } = useGetComment(frontGetAllCommentUseCase);
   const { executeDeleteCommentHook } = useDeleteComment(deleteCommentByIdUC);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,13 +81,7 @@ export const KelolaKomentar: React.FC = () => {
                         <h6 className="fw-bold mb-0 text-dark">{e.fullName}</h6>
                         <small className="text-muted d-flex align-items-center gap-1" style={{ fontSize: '11px' }}>
                           <Calendar size={12} />
-                          {new Date(e.createdAt).toLocaleDateString('id-ID', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
+                          {e.createdAt}
                         </small>
                       </div>
                     </div>
