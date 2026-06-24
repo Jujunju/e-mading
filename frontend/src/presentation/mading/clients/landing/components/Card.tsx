@@ -34,7 +34,7 @@ export const Card: React.FC = () => {
             <div key={e.id} className="col-12 col-md-6 col-lg-4">
               <div className="card h-100 border-0 mading-card-premium">
                 <div className="position-relative overflow-hidden img-container">
-                  <img src={`http://localhost:8080/uploads/${e.gambar}`} className="w-100 h-100 object-fit-cover mading-img" alt={e.judul} />
+                  <img src={e.gambar} className="w-100 h-100 object-fit-cover mading-img" alt={e.judul} />
                   <div className="mading-badge">{e.kategori}</div>
                 </div>
 

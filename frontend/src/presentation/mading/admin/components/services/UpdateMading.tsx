@@ -171,7 +171,7 @@ export const UpdateMading: React.FC = () => {
                       <button type="button" className="position-absolute bg-danger border-0 rounded-circle p-1 m-1 end-0 z-3" onClick={() => (setPreview(null), setIsImageDeleted(true))} style={{ cursor: 'pointer' }}>
                         <X size={30} className="text-white" />
                       </button>
-                      <img src={preview || `http://localhost:8080/uploads/${data?.gambar}`} className="w-100 object-fit-cover shadow-sm" style={{ height: '350px' }} alt="Preview" />
+                      <img src={preview || data?.gambar} className="w-100 object-fit-cover shadow-sm" style={{ height: '350px' }} alt="Preview" />
                     </div>
                   ) : (
                     <div className="empty-upload text-center py-5 bg-light border-2 border-dashed rounded-4">

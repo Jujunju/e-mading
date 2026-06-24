@@ -110,7 +110,6 @@ export const KelolaMading: React.FC = () => {
 
   return (
     <div className="p-3 p-md-4 animate__animated animate__fadeIn" style={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-
       <div className="header-content col-12 col-sm-8 text-sm-center text-md-start col-md-12 mx-sm-auto d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
           <h3 className="fw-bold text-dark mb-1" style={{ letterSpacing: '-1px' }}>
@@ -192,7 +191,7 @@ export const KelolaMading: React.FC = () => {
 
                     <td className="td-content">
                       <div className="d-flex align-items-center gap-3">
-                        <img src={`http://localhost:8080/uploads/${d.gambar}`} className="img-thumb rounded-3 shadow-sm border" alt="mading" />
+                        <img src={d.gambar} className="img-thumb rounded-3 shadow-sm border" alt="mading" />
                         <div className="overflow-hidden">
                           <h6 className="mb-0 fw-bold text-dark ">{d.judul}</h6>
                         </div>

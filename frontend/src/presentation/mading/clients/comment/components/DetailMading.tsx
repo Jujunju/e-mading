@@ -140,7 +140,7 @@ export const DetailMading: React.FC = () => {
           <div className="col-lg-9 col-xl-8">
             <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-5">
               <div className="position-relative">
-                <img src={`http://localhost:8080/uploads/${found?.gambar}`} className="w-100" alt="cover" style={{ height: '500px', objectFit: 'cover' }} />
+                <img src={found?.gambar} className="w-100" alt="cover" style={{ height: '500px', objectFit: 'cover' }} />
                 <div className="image-overlay-soft" />
               </div>
               <div className="card-body p-4 p-md-5 mt-n5 position-relative bg-white mx-3 rounded-4 shadow-sm" style={{ marginTop: '-40px' }}>
