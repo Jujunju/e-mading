@@ -22,7 +22,14 @@ export class MadingRoute {
 
   createMading(): void {
     this.router.post('/mading', this.authMidl.authMiddleware, upload.single('gambar'), async (req: Request, res: Response, next: NextFunction) => {
-      const requestData = { ...req.body, gambar: req.file ? req.file.filename : null };
+      
+      let gambarBase64 = null;
+      
+      if(req.file){
+        gambarBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+      }
+
+      const requestData = { ...req.body, gambar: gambarBase64 };
 
       const response = await this.controller.handleCreateMading(requestData);
       if (!response) {
