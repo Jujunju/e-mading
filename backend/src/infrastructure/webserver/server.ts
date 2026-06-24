@@ -7,7 +7,7 @@ import { sendResponse } from '../utils/status-response.util';
 const serverExpress = express();
 serverExpress.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://e-mading-by-jujun.vercel.app'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
