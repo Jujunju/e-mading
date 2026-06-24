@@ -30,14 +30,12 @@ export const useGetAllComment = (frontGetAllCommentUseCase: FrontGetAllCommentUs
 
 export const useDeleteComment = (frontDeleteKomentarByIdUseCase: FrontDeleteCommentByIdUseCase) => {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const executeDeleteCommentHook = async (id: string) => {
     try {
       setLoading(true);
       const response = await frontDeleteKomentarByIdUseCase.execute(id);
-      setSuccess(true);
       return response;
     } catch (error) {
       if (error instanceof Error) {
@@ -48,5 +46,5 @@ export const useDeleteComment = (frontDeleteKomentarByIdUseCase: FrontDeleteComm
     }
   };
 
-  return { executeDeleteCommentHook, loading, error, success };
+  return { executeDeleteCommentHook, loading, error };
 };

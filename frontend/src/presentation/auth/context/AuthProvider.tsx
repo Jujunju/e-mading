@@ -23,7 +23,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC, logoutAuthUC }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [isSubmitloading, setIsSubmitLoading] = useState<boolean>(false);
@@ -41,7 +40,6 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
-        setSuccess(false);
       }
       setIsAuthenticated(false);
     } finally {
@@ -50,7 +48,6 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
   };
 
   const handlerLogin = async (req: FrontAuthLoginDTO) => {
-    setSuccess(false);
 
     try {
       setIsSubmitLoading(true);
@@ -63,7 +60,6 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
         setUser(response);
       }
 
-      setSuccess(true);
       const swal = await Swal.fire({
         title: `Akun siap. Saatnya beraksi! 🚀`,
         icon: 'success',
@@ -82,7 +78,6 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
 
       if (error instanceof Error) {
         setError(error.message);
-        setSuccess(false);
       }
       Swal.fire({
         icon: 'error',
@@ -93,13 +88,11 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
     }
   };
   const handlerRegister = async (req: FrontCreateUserDTO) => {
-    setSuccess(false);
 
     try {
       setLoading(true);
       setError(null);
       const result = await createUserUC.execute(req);
-      setSuccess(true);
       const swal = await Swal.fire({
         title: 'Pendaftaran Berhasil!',
         icon: 'success',
@@ -126,14 +119,11 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
   const handlerLogout = async () => {
     setLoading(true);
     try {
-      setSuccess(false);
       setError(null);
 
       const response = await logoutAuthUC.execute();
 
-      if (response) {
-        setSuccess(true);
-      }
+      return response
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -143,5 +133,5 @@ export const AuthProvider = ({ children, checkAuthUC, createUserUC, loginAuthUC,
     }
   };
 
-  return <AuthContext.Provider value={{ isAuthenticated, error, loading, authLoading, isSubmitloading, success, user, handlerLogin, handlerLogout, handlerRegister, verifyToken }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuthenticated, error, loading, authLoading, isSubmitloading, user, handlerLogin, handlerLogout, handlerRegister, verifyToken }}>{children}</AuthContext.Provider>;
 };

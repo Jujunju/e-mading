@@ -126,14 +126,12 @@ export const useUpdateMadingById = (frontUpdateMadingByIdUseCase: FrontUpdateMad
 
 export const useDeleteMadingById = (frontDeleteMadingByIdUseCase: FrontDeleteMadingByIdUsecase) => {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error2, setError2] = useState<string | null>(null);
 
   const executeDeleteMadingByIdHook = async (id: string) => {
     try {
       setLoading(true);
       const response = await frontDeleteMadingByIdUseCase.execute(id);
-      setSuccess(true);
 
       Swal.fire({
         title: 'Data berhasil terhapus!',
@@ -155,12 +153,11 @@ export const useDeleteMadingById = (frontDeleteMadingByIdUseCase: FrontDeleteMad
     }
   };
 
-  return { executeDeleteMadingByIdHook, loading, error2, success };
+  return { executeDeleteMadingByIdHook, loading, error2 };
 };
 
 export const useDeleteAllMading = (frontBulkDeleteMadingByIdsUseCase: FrontBulkDeleteMadingByIdsUseCase) => {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error2, setError2] = useState<string | null>(null);
 
   const executeDeleteAllMadingHook = async (ids: string[]) => {
@@ -168,7 +165,6 @@ export const useDeleteAllMading = (frontBulkDeleteMadingByIdsUseCase: FrontBulkD
       setLoading(true);
       const response = await frontBulkDeleteMadingByIdsUseCase.execute(ids);
       if (response) {
-        setSuccess(true);
         Swal.fire({
           title: 'Data berhasil terhapus!',
           icon: 'success',
@@ -190,5 +186,5 @@ export const useDeleteAllMading = (frontBulkDeleteMadingByIdsUseCase: FrontBulkD
     }
   };
 
-  return { executeDeleteAllMadingHook, loading, error2, success };
+  return { executeDeleteAllMadingHook, loading, error2 };
 };

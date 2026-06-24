@@ -29,7 +29,7 @@ export class StudentsRoute {
   }
 
   getStudentById(): void {
-    this.router.get('/student/:id', this.authMidl.authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+    this.router.get('/student/:id',  async (req: Request, res: Response, next: NextFunction) => {
       const requestData = req.params.id as string;
 
       const response = await this.controller.handleGetStudentById(requestData);

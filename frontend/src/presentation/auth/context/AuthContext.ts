@@ -9,7 +9,6 @@ export interface AuthContextType {
   loading: boolean;
   isSubmitloading: boolean;
   error: string | null;
-  success: boolean;
   user: FrontAuthLoginResponse | null;
   handlerLogin: (req: FrontAuthLoginDTO) => Promise<unknown>;
   handlerRegister: (req: FrontCreateUserDTO) => Promise<unknown>;
